@@ -189,7 +189,7 @@ The UI uses drilling operator terms instead of mathematical notation:
 |--------------|-----------|
 | API | American Petroleum Institute |
 | BHA | Bottom Hole Assembly |
-| CTS | Cognitive Topological System (the main operator interface) |
+| CTS | Core Topological System (the main operator interface) |
 | DD | Directional Driller |
 | EDR | Electronic Drilling Recorder |
 | ECD | Equivalent Circulating Density |

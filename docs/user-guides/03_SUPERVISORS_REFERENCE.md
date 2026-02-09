@@ -9,12 +9,12 @@ Technical depth for experienced hands who need to understand the "why"
 ## Executive Summary
 
 This system applies **topological data analysis (TDA)** to drilling data to:
-1. Detect drilling dysfunction 30-120 seconds before traditional threshold alarms
+1. Classify drilling regimes using multi-parameter topological analysis, which may provide indication of developing dysfunction before single-parameter thresholds are breached
 2. Identify specific dysfunction type (stick-slip vs whirl vs bit bounce)
-3. Provide physics-based remediation recommendations
-4. Adapt to each well's specific characteristics
+3. Provide rule-based remediation suggestions grounded in BHA mechanics
+4. Calibrate to each well's specific characteristics
 
-**Bottom line**: Earlier detection + specific diagnosis = less NPT, less tool damage, better hole.
+**Bottom line**: Multi-parameter pattern analysis + specific classification = better-informed decisions on NPT reduction and tool protection.
 
 ---
 
@@ -44,7 +44,7 @@ Raw Data → State Space Embedding → Persistent Homology → Regime Classifica
 
 | Advantage | Explanation |
 |-----------|-------------|
-| Earlier detection | Topology changes before thresholds breach |
+| Multi-parameter analysis | Topology may shift before individual thresholds breach |
 | Specific diagnosis | Different regimes have distinct topological signatures |
 | Adaptive | Learns each well's "normal" topology |
 | Physics-based | Recommendations derive from understanding of BHA mechanics |
@@ -220,7 +220,7 @@ Each recommendation derives from:
 ### Trust the System When:
 
 - Fresh eyes on a pattern you've normalized
-- Early-stage detection (before you'd notice)
+- Potential early-stage detection from multi-parameter analysis
 - Pattern matches known failure modes
 - High confidence (>80%)
 
