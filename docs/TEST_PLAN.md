@@ -63,7 +63,7 @@ JONES_LOG_LEVEL=INFO
 
 ```bash
 curl http://localhost:8000/health
-# Expected: {"status":"healthy","framework":"jones_framework","pointcloud_api":true}
+# Expected: {"status":"healthy","framework":true,"pointcloud_api":true}
 ```
 
 ---
@@ -231,17 +231,17 @@ Expected: `200` with `h0` and `h1` Betti curve arrays.
 ```bash
 curl -s -X POST http://localhost:8000/api/v1/tda/windowed-signatures \
   -H "Content-Type: application/json" \
-  -d '{"point_cloud": [[15,120,45,8500,3200],[18,140,52,9200,3400],[20,110,38,7800,3100],[12,160,60,10000,3600],[16,130,48,8800,3300]], "window_size": 3, "step_size": 1}'
+  -d '{"point_cloud": [[15,120,45,8500,3200],[18,140,52,9200,3400],[20,110,38,7800,3100],[12,160,60,10000,3600],[16,130,48,8800,3300]], "window_size": 3, "stride": 1}'
 ```
-Expected: `200` with `signatures` array of windowed TDA snapshots.
+Expected: `200` with `windows` array of windowed TDA snapshots, `window_size`, `stride`, `num_windows` fields.
 
 **POST /api/v1/tda/change-detect**
 ```bash
 curl -s -X POST http://localhost:8000/api/v1/tda/change-detect \
   -H "Content-Type: application/json" \
-  -d '{"point_cloud": [[15,120,45,8500,3200],[18,140,52,9200,3400],[20,110,38,7800,3100],[12,160,60,10000,3600],[16,130,48,8800,3300]], "window_size": 3}'
+  -d '{"point_cloud_a": [[15,120,45,8500,3200],[18,140,52,9200,3400],[20,110,38,7800,3100]], "point_cloud_b": [[25,90,30,6000,2800],[28,95,35,6500,2900],[22,85,28,5800,2700]], "threshold": 0.5}'
 ```
-Expected: `200` with `change_detected`, `magnitude`, `threshold` fields.
+Expected: `200` with `detected_change`, `change_magnitude`, `betti_change`, `landscape_distance`, `silhouette_distance` fields.
 
 ---
 
@@ -303,7 +303,7 @@ curl -s -X POST http://localhost:8000/api/v1/network/compute \
   -H "Content-Type: application/json" \
   -d '{"records": [{"wob":15,"rpm":120,"rop":45,"torque":8500,"spp":3200},{"wob":18,"rpm":140,"rop":52,"torque":9200,"spp":3400},{"wob":20,"rpm":110,"rop":38,"torque":7800,"spp":3100},{"wob":12,"rpm":160,"rop":60,"torque":10000,"spp":3600},{"wob":16,"rpm":130,"rop":48,"torque":8800,"spp":3300}]}'
 ```
-Expected: `200` with `nodes`, `edges`, `categories` fields. Nodes contain channel names, edges contain correlation strengths.
+Expected: `200` with `nodes`, `edges`, `strong_count`, `anomaly_count`, `system_health`, `computation_time_ms` fields. Nodes contain channel names with health status, edges contain correlation strengths.
 
 ---
 
@@ -313,25 +313,25 @@ Expected: `200` with `nodes`, `edges`, `categories` fields. Nodes contain channe
 ```bash
 curl -s -X POST http://localhost:8000/api/v1/geometry/metric-field \
   -H "Content-Type: application/json" \
-  -d '{"records": [{"wob":15,"rpm":120,"rop":45,"torque":8500,"spp":3200},{"wob":18,"rpm":140,"rop":52,"torque":9200,"spp":3400},{"wob":20,"rpm":110,"rop":38,"torque":7800,"spp":3100}], "grid_size": 5}'
+  -d '{"t_range": [0, 100], "d_range": [0, 5000], "resolution": 10}'
 ```
-Expected: `200` with `points` array; each point has `x`, `y`, `metric_tensor`, `ricci_scalar`.
+Expected: `200` with `points` array (each has `t`, `d`, `g_tt`, `g_dd`, `determinant`, `ricci_scalar`, `rop`), `t_values`, `d_values`, `resolution` fields.
 
 **POST /api/v1/geometry/geodesic**
 ```bash
 curl -s -X POST http://localhost:8000/api/v1/geometry/geodesic \
   -H "Content-Type: application/json" \
-  -d '{"records": [{"wob":15,"rpm":120,"rop":45,"torque":8500,"spp":3200},{"wob":18,"rpm":140,"rop":52,"torque":9200,"spp":3400},{"wob":20,"rpm":110,"rop":38,"torque":7800,"spp":3100}], "start": [15, 120], "end": [20, 110]}'
+  -d '{"start": [0, 0], "end": [100, 5000], "n_steps": 50}'
 ```
-Expected: `200` with `path` array of `[x, y]` points and `length`.
+Expected: `200` with `path` array of `[t, d]` points, `total_length`, `start_rop`, `end_rop`, `start_curvature`, `end_curvature` fields.
 
 **POST /api/v1/geometry/curvature-field**
 ```bash
 curl -s -X POST http://localhost:8000/api/v1/geometry/curvature-field \
   -H "Content-Type: application/json" \
-  -d '{"records": [{"wob":15,"rpm":120,"rop":45,"torque":8500,"spp":3200},{"wob":18,"rpm":140,"rop":52,"torque":9200,"spp":3400},{"wob":20,"rpm":110,"rop":38,"torque":7800,"spp":3100}], "grid_size": 5}'
+  -d '{"records": [{"wob":15,"rpm":120,"rop":45,"torque":8500,"spp":3200},{"wob":18,"rpm":140,"rop":52,"torque":9200,"spp":3400},{"wob":20,"rpm":110,"rop":38,"torque":7800,"spp":3100}], "resolution": 10}'
 ```
-Expected: `200` with `points` array; each point has `x`, `y`, `curvature`.
+Expected: `200` with `points` array (each has `t`, `d`, `g_tt`, `g_dd`, `determinant`, `ricci_scalar`, `rop`), `t_values`, `d_values`, `resolution`, `max_curvature`, `min_curvature`, `mean_curvature` fields.
 
 ---
 
@@ -343,7 +343,7 @@ curl -s -X POST http://localhost:8000/api/v1/tda/fingerprint \
   -H "Content-Type: application/json" \
   -d '{"point_cloud": [[15,120,45,8500,3200],[18,140,52,9200,3400],[20,110,38,7800,3100],[12,160,60,10000,3600],[16,130,48,8800,3300]]}'
 ```
-Expected: `200` with `fingerprint` (10-dim vector), `regime_id`, `confidence` fields.
+Expected: `200` with `matched_regime`, `confidence`, `is_transition`, `observed_features`, `matched_signature`, `feature_distances`, `top_drivers`, `all_distances` fields.
 
 **POST /api/v1/tda/attribute**
 ```bash
@@ -351,21 +351,21 @@ curl -s -X POST http://localhost:8000/api/v1/tda/attribute \
   -H "Content-Type: application/json" \
   -d '{"point_cloud": [[15,120,45,8500,3200],[18,140,52,9200,3400],[20,110,38,7800,3100],[12,160,60,10000,3600],[16,130,48,8800,3300]]}'
 ```
-Expected: `200` with `attributions` array of `{feature, value, percentage}` objects.
+Expected: `200` with `regime`, `confidence`, `attributions` array (each has `feature`, `observed`, `signature`, `normalized_distance`, `squared_contribution`, `contribution_pct`), `total_distance`, `dominant_dimension`, `interpretation` fields.
 
 **POST /api/v1/tda/compare-regimes**
 ```bash
 curl -s -X POST http://localhost:8000/api/v1/tda/compare-regimes \
   -H "Content-Type: application/json" \
-  -d '{"point_cloud_a": [[15,120,45,8500,3200],[18,140,52,9200,3400],[20,110,38,7800,3100]], "point_cloud_b": [[25,90,30,6000,2800],[28,95,35,6500,2900],[22,85,28,5800,2700]]}'
+  -d '{"regime_a": "NORMAL", "regime_b": "STICK_SLIP"}'
 ```
-Expected: `200` with `regime_a`, `regime_b`, `fingerprint_a`, `fingerprint_b`, `distance` fields.
+Expected: `200` with `regime_a`, `regime_b`, `features_a`, `features_b`, `feature_deltas`, `topological_distance`, `discriminating_features`, `interpretation` fields.
 
 **GET /api/v1/tda/fingerprint-library**
 ```bash
 curl -s http://localhost:8000/api/v1/tda/fingerprint-library
 ```
-Expected: `200` with `library` object mapping regime names to reference fingerprints.
+Expected: `200` with `signatures` array, `count`, `feature_names` fields.
 
 ---
 
@@ -375,17 +375,17 @@ Expected: `200` with `library` object mapping regime names to reference fingerpr
 ```bash
 curl -s -X POST http://localhost:8000/api/v1/tda/forecast \
   -H "Content-Type: application/json" \
-  -d '{"signatures": [{"betti_0":3,"betti_1":1,"entropy_h0":0.5,"entropy_h1":0.3,"max_lifetime_h0":2.1,"max_lifetime_h1":1.2,"mean_lifetime_h0":0.8,"mean_lifetime_h1":0.4,"n_features_h0":5,"n_features_h1":2},{"betti_0":4,"betti_1":1,"entropy_h0":0.6,"entropy_h1":0.35,"max_lifetime_h0":2.3,"max_lifetime_h1":1.3,"mean_lifetime_h0":0.9,"mean_lifetime_h1":0.45,"n_features_h0":6,"n_features_h1":2}], "horizon": 3}'
+  -d '{"point_cloud": [[15,120,45,8500,3200],[18,140,52,9200,3400],[20,110,38,7800,3100],[12,160,60,10000,3600],[16,130,48,8800,3300]], "window_size": 3, "stride": 1, "n_ahead": 3}'
 ```
-Expected: `200` with `forecast` array of `{step, predicted, upper_band, lower_band}` objects, plus `velocity`, `acceleration`, `stability_index`.
+Expected: `200` with `current` (feature dict), `forecast` array of ForecastPoint objects, `velocity`, `acceleration`, `trend_direction`, `stability_index`, `n_windows_used`, `n_ahead` fields.
 
 **POST /api/v1/tda/transition-probability**
 ```bash
 curl -s -X POST http://localhost:8000/api/v1/tda/transition-probability \
   -H "Content-Type: application/json" \
-  -d '{"signatures": [{"betti_0":3,"betti_1":1,"entropy_h0":0.5,"entropy_h1":0.3,"max_lifetime_h0":2.1,"max_lifetime_h1":1.2,"mean_lifetime_h0":0.8,"mean_lifetime_h1":0.4,"n_features_h0":5,"n_features_h1":2},{"betti_0":4,"betti_1":1,"entropy_h0":0.6,"entropy_h1":0.35,"max_lifetime_h0":2.3,"max_lifetime_h1":1.3,"mean_lifetime_h0":0.9,"mean_lifetime_h1":0.45,"n_features_h0":6,"n_features_h1":2}]}'
+  -d '{"point_cloud": [[15,120,45,8500,3200],[18,140,52,9200,3400],[20,110,38,7800,3100],[12,160,60,10000,3600],[16,130,48,8800,3300]], "window_size": 3, "stride": 1}'
 ```
-Expected: `200` with `probabilities` object mapping regime names to probability values, `risk_level` field.
+Expected: `200` with `current_regime`, `probabilities` (regime name to probability mapping), `trending_toward`, `trending_away`, `velocity_magnitude`, `estimated_windows_to_transition`, `risk_level` fields.
 
 ---
 
@@ -395,17 +395,17 @@ Expected: `200` with `probabilities` object mapping regime names to probability 
 ```bash
 curl -s -X POST http://localhost:8000/api/v1/shadow/embed \
   -H "Content-Type: application/json" \
-  -d '{"records": [{"wob":15,"rpm":120,"rop":45,"torque":8500,"spp":3200},{"wob":18,"rpm":140,"rop":52,"torque":9200,"spp":3400},{"wob":20,"rpm":110,"rop":38,"torque":7800,"spp":3100},{"wob":12,"rpm":160,"rop":60,"torque":10000,"spp":3600},{"wob":16,"rpm":130,"rop":48,"torque":8800,"spp":3300}]}'
+  -d '{"records": [{"wob":15,"rpm":120,"rop":45,"torque":8500,"spp":3200},{"wob":18,"rpm":140,"rop":52,"torque":9200,"spp":3400},{"wob":20,"rpm":110,"rop":38,"torque":7800,"spp":3100},{"wob":12,"rpm":160,"rop":60,"torque":10000,"spp":3600},{"wob":16,"rpm":130,"rop":48,"torque":8800,"spp":3300}], "parameter": "rop", "embedding_dim": 3, "delay_lag": 1}'
 ```
-Expected: `200` with `embedding` (3D coordinate array), `dimension`, `delay_lag` fields.
+Expected: `200` with `point_cloud` (3D coordinate array), `metric_proxy`, `tangent_proxy`, `fractal_proxy`, `embedding_dim`, `delay_lag`, `n_points`, `total_dimension` fields.
 
 **POST /api/v1/shadow/attractor**
 ```bash
 curl -s -X POST http://localhost:8000/api/v1/shadow/attractor \
   -H "Content-Type: application/json" \
-  -d '{"records": [{"wob":15,"rpm":120,"rop":45,"torque":8500,"spp":3200},{"wob":18,"rpm":140,"rop":52,"torque":9200,"spp":3400},{"wob":20,"rpm":110,"rop":38,"torque":7800,"spp":3100},{"wob":12,"rpm":160,"rop":60,"torque":10000,"spp":3600},{"wob":16,"rpm":130,"rop":48,"torque":8800,"spp":3300}]}'
+  -d '{"records": [{"wob":15,"rpm":120,"rop":45,"torque":8500,"spp":3200},{"wob":18,"rpm":140,"rop":52,"torque":9200,"spp":3400},{"wob":20,"rpm":110,"rop":38,"torque":7800,"spp":3100},{"wob":12,"rpm":160,"rop":60,"torque":10000,"spp":3600},{"wob":16,"rpm":130,"rop":48,"torque":8800,"spp":3300}], "parameter": "rop"}'
 ```
-Expected: `200` with `attractor_type` (one of: fixed_point, limit_cycle, strange_attractor, quasi_periodic, stochastic, transient), `lyapunov_exponent`, `correlation_dimension`, `rqa` (recurrence_rate, determinism, laminarity, trapping_time) fields.
+Expected: `200` with `attractor_type` (one of: fixed_point, limit_cycle, strange_attractor, quasi_periodic, stochastic, transient), `lyapunov_exponent`, `lyapunov_interpretation`, `correlation_dimension`, `recurrence_rate`, `determinism`, `laminarity`, `trapping_time`, `embedding_dim`, `n_points` fields.
 
 ---
 
@@ -415,17 +415,17 @@ Expected: `200` with `attractor_type` (one of: fixed_point, limit_cycle, strange
 ```bash
 curl -s -X POST http://localhost:8000/api/v1/advisory/recommend \
   -H "Content-Type: application/json" \
-  -d '{"records": [{"wob":15,"rpm":120,"rop":45,"torque":8500,"spp":3200},{"wob":18,"rpm":140,"rop":52,"torque":9200,"spp":3400},{"wob":20,"rpm":110,"rop":38,"torque":7800,"spp":3100},{"wob":12,"rpm":160,"rop":60,"torque":10000,"spp":3600},{"wob":16,"rpm":130,"rop":48,"torque":8800,"spp":3300}], "target_regime": "OPTIMAL"}'
+  -d '{"current_params": {"wob":15,"rpm":120,"rop":45,"torque":8500,"spp":3200}, "current_regime": "NORMAL", "target_regime": "OPTIMAL"}'
 ```
-Expected: `200` with `steps` array of `{parameter, current, target, delta, unit, order}` objects, `current_regime`, `target_regime`, `path_efficiency` fields.
+Expected: `200` with `current_regime`, `target_regime`, `confidence`, `steps` array (each has `step_index`, `parameter`, `current_value`, `target_value`, `change_amount`, `change_pct`, `priority`, `rationale`), `geodesic_length`, `euclidean_length`, `path_efficiency`, `risk_score`, `risk_level`, `estimated_transitions`, `reasoning`, `parameter_trajectory` fields.
 
 **POST /api/v1/advisory/risk**
 ```bash
 curl -s -X POST http://localhost:8000/api/v1/advisory/risk \
   -H "Content-Type: application/json" \
-  -d '{"records": [{"wob":15,"rpm":120,"rop":45,"torque":8500,"spp":3200},{"wob":18,"rpm":140,"rop":52,"torque":9200,"spp":3400},{"wob":20,"rpm":110,"rop":38,"torque":7800,"spp":3100},{"wob":12,"rpm":160,"rop":60,"torque":10000,"spp":3600},{"wob":16,"rpm":130,"rop":48,"torque":8800,"spp":3300}], "target_regime": "OPTIMAL"}'
+  -d '{"current_params": {"wob":15,"rpm":120,"rop":45,"torque":8500,"spp":3200}, "proposed_changes": {"wob":2,"rpm":-10,"rop":5}, "current_regime": "NORMAL"}'
 ```
-Expected: `200` with `risk_factors` array of `{category, score, description}` objects, `overall_risk`, `mitigations`, `abort_conditions` fields.
+Expected: `200` with `overall_risk`, `risk_level`, `risk_factors` array (each has `factor`, `value`, `risk`), `mitigations`, `abort_conditions`, `regime_risk`, `path_risk`, `correlation_risk` fields.
 
 ---
 
@@ -435,31 +435,31 @@ Expected: `200` with `risk_factors` array of `{category, score, description}` ob
 ```bash
 curl -s -X POST http://localhost:8000/api/v1/field/register \
   -H "Content-Type: application/json" \
-  -d '{"well_name": "Well-A", "records": [{"wob":15,"rpm":120,"rop":45,"torque":8500,"spp":3200},{"wob":18,"rpm":140,"rop":52,"torque":9200,"spp":3400},{"wob":20,"rpm":110,"rop":38,"torque":7800,"spp":3100},{"wob":12,"rpm":160,"rop":60,"torque":10000,"spp":3600},{"wob":16,"rpm":130,"rop":48,"torque":8800,"spp":3300}]}'
+  -d '{"name": "Well-A", "records": [{"wob":15,"rpm":120,"rop":45,"torque":8500,"spp":3200},{"wob":18,"rpm":140,"rop":52,"torque":9200,"spp":3400},{"wob":20,"rpm":110,"rop":38,"torque":7800,"spp":3100},{"wob":12,"rpm":160,"rop":60,"torque":10000,"spp":3600},{"wob":16,"rpm":130,"rop":48,"torque":8800,"spp":3300}]}'
 ```
-Expected: `200` with `well_id`, `well_name`, `fingerprint` (10-dim vector), `regime_distribution` fields.
+Expected: `200` with `well_id`, `name`, `regime`, `confidence`, `depth_range`, `num_records`, `feature_vector` fields.
 
 **GET /api/v1/field/atlas**
 ```bash
 curl -s http://localhost:8000/api/v1/field/atlas
 ```
-Expected: `200` with `wells` array and `field_summary` object.
+Expected: `200` with `wells` array, `well_count`, `field_summary` object.
 
 **POST /api/v1/field/compare**
 ```bash
 curl -s -X POST http://localhost:8000/api/v1/field/compare \
   -H "Content-Type: application/json" \
-  -d '{"well_a": "Well-A", "well_b": "Well-B"}'
+  -d '{"well_id_a": "<well_id_from_register>", "well_id_b": "<well_id_from_register>"}'
 ```
-Expected: `200` with `well_a`, `well_b`, `topological_distance`, `feature_deltas`, `regime_similarity` fields. Note: requires both wells to be registered first.
+Expected: `200` with `well_a`, `well_b`, `topological_distance`, `feature_deltas`, `discriminating_features`, `regime_similarity`, `depth_overlap`, `interpretation` fields. Note: requires both wells to be registered first; use `well_id` values returned by `/field/register`.
 
 **POST /api/v1/field/pattern-search**
 ```bash
 curl -s -X POST http://localhost:8000/api/v1/field/pattern-search \
   -H "Content-Type: application/json" \
-  -d '{"query_fingerprint": [3,1,0.5,0.3,2.1,1.2,0.8,0.4,5,2], "top_k": 3}'
+  -d '{"query_features": [3,1,0.5,0.3,2.1,1.2,0.8,0.4,5,2], "top_k": 3}'
 ```
-Expected: `200` with `matches` array of `{well_name, distance, fingerprint}` objects. Note: requires wells to be registered first.
+Expected: `200` with `matches` array (each has `well_id`, `name`, `distance`, `regime`, `confidence`, `feature_vector`), `count` field. Note: requires wells to be registered first.
 
 ---
 
@@ -471,7 +471,7 @@ curl -s -X POST http://localhost:8000/api/v1/dashboard/summary \
   -H "Content-Type: application/json" \
   -d '{"records": [{"wob":15,"rpm":120,"rop":45,"torque":8500,"spp":3200},{"wob":18,"rpm":140,"rop":52,"torque":9200,"spp":3400},{"wob":20,"rpm":110,"rop":38,"torque":7800,"spp":3100},{"wob":12,"rpm":160,"rop":60,"torque":10000,"spp":3600},{"wob":16,"rpm":130,"rop":48,"torque":8800,"spp":3300}]}'
 ```
-Expected: `200` with `regime`, `display_name`, `color`, `parameters`, `topology` (drilling_zones, coupling_loops, stability), `predictability_index`, `behavioral_consistency`, `transition_risk`, `advisory_step` fields.
+Expected: `200` with `regime`, `regime_display`, `confidence`, `color`, `recommendation`, `rop`, `wob`, `rpm`, `torque`, `spp`, `drilling_zones`, `coupling_loops`, `signature_stability`, `predictability_index`, `behavioral_consistency`, `trending_toward`, `transition_risk`, `estimated_windows_to_transition`, `top_advisory`, `advisory_risk` fields.
 
 ---
 
@@ -484,7 +484,7 @@ Expected: `200` with `regime`, `display_name`, `color`, `parameters`, `topology`
 curl -s -X POST http://localhost:8000/api/v1/las/upload \
   -F "file=@/path/to/your/file.las"
 ```
-Expected: `200` with `file_id`, `filename`, `curves`, `depth_range` fields.
+Expected: `200` with `file_id`, `status`, `metadata` (nested object with `well_name`, `company`, `index_type`, `index_unit`, `index_min`, `index_max`, `num_rows`, `num_curves`, `curves`) fields.
 
 **POST /api/v1/las/{file_id}/curves**
 ```bash
@@ -498,9 +498,9 @@ Expected: `200` with `curves` object containing requested curve data arrays.
 ```bash
 curl -s -X POST http://localhost:8000/api/v1/las/{file_id}/map-to-drilling \
   -H "Content-Type: application/json" \
-  -d '{}'
+  -d '{"curve_mapping": {"DEPT": "depth", "WOB": "wob", "RPM": "rpm", "ROP": "rop", "TRQ": "torque", "SPP": "spp"}}'
 ```
-Expected: `200` with `records` array of drilling record objects, `count`, `mapping` fields.
+Expected: `200` with `records` array of drilling record objects, `count`, `regime` (optional classification result) fields.
 
 **GET /api/v1/las/files**
 ```bash
@@ -512,7 +512,7 @@ Expected: `200` with `files` array of uploaded LAS file summaries.
 ```bash
 curl -s -X POST http://localhost:8000/api/v1/las/{file_id}/analyze-window \
   -H "Content-Type: application/json" \
-  -d '{"start_index": 0, "end_index": 50}'
+  -d '{"curve_mapping": {"DEPT": "depth", "WOB": "wob", "RPM": "rpm", "ROP": "rop", "TRQ": "torque", "SPP": "spp"}, "start_index": 0, "end_index": 50}'
 ```
 Expected: `200` with `records`, `count`, `regime`, `windowed_signatures`, `index_range` fields.
 
@@ -564,8 +564,8 @@ Expected response: `{"type": "classification", "regime_id": "...", "confidence":
 ### D.3 WELL PATH
 
 - **Navigation:** Click "WELL PATH" tab
-- **Elements:** 3D well trajectory visualization (Three.js/R3F)
-- **Verify:** 3D trajectory renders with depth coloring
+- **Elements:** DirectionalStudio (3D well trajectory via Three.js/R3F), BHABuilder (BHA configuration panel), GTMoePanel (regime optimizer)
+- **Verify:** 3D trajectory renders with depth coloring, BHA configuration form visible, regime optimizer panel shows current regime and recommendations
 
 ### D.4 WIRE MESH
 
@@ -618,8 +618,8 @@ Expected response: `{"type": "classification", "regime_id": "...", "confidence":
 ### D.12 ANALYZER
 
 - **Navigation:** Click "ANALYZER" tab (requires LAS file loaded)
-- **Elements:** LASAnalyzer (dual-thumb slider, step/play controls), RegimeStrip (colored regime evolution bar)
-- **Verify:** Depth slider moves window through LAS data, step buttons increment window position, play button auto-advances, regime strip colors update per window. No LAS → empty state prompt
+- **Elements:** LASAnalyzer (dual-thumb slider, step/play controls), RegimeStrip (colored regime evolution bar), KPICards, TrustGauge, BettiTimeline
+- **Verify:** Depth slider moves window through LAS data, step buttons increment window position, play button auto-advances, regime strip colors update per window, KPI and topology widgets update per window. No LAS → empty state prompt
 
 ---
 

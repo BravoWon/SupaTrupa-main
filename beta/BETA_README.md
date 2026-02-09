@@ -59,7 +59,7 @@ bash beta/verify.sh
 Or manually:
 ```bash
 curl http://localhost:8000/health
-# Expected: {"status":"healthy","framework":"jones_framework","pointcloud_api":true}
+# Expected: {"status":"healthy","framework":true,"pointcloud_api":true}
 ```
 
 ---
@@ -135,7 +135,7 @@ When reporting issues, include:
 ```
 Frontend (React 19)          Backend (Python/FastAPI)
   12 UI Tabs                   45 REST/WS Endpoints
-  30+ Components               TDA Pipeline (Ripser)
+  42 Components                TDA Pipeline (Ripser)
   Force Simulation             Regime Classifier (16 regimes)
   Canvas/SVG/WebGL             Advisory Engine
        |                       Shadow Tensor Builder

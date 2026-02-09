@@ -58,8 +58,8 @@ RESULT=$(curl -s -X POST "$BASE_URL/api/v1/dashboard/summary" \
     -H "Content-Type: application/json" \
     -d '{"records":[{"wob":15,"rpm":120,"rop":45,"torque":8500,"spp":3200},{"wob":18,"rpm":140,"rop":52,"torque":9200,"spp":3400},{"wob":20,"rpm":110,"rop":38,"torque":7800,"spp":3100}]}' 2>/dev/null)
 if [ -n "$RESULT" ]; then
-    DISPLAY=$(echo "$RESULT" | python3 -c "import sys,json; print(json.load(sys.stdin).get('display_name','?'))" 2>/dev/null)
-    echo "   PASS: display_name=$DISPLAY"
+    DISPLAY=$(echo "$RESULT" | python3 -c "import sys,json; print(json.load(sys.stdin).get('regime_display','?'))" 2>/dev/null)
+    echo "   PASS: regime_display=$DISPLAY"
     PASS=$((PASS + 1))
 else
     echo "   FAIL: No response"

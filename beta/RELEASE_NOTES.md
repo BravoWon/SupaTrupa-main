@@ -64,7 +64,7 @@ A cognitive topological system (CTS) for real-time drilling intelligence. It use
 |--------|-------|
 | API endpoints | 45 |
 | UI tabs | 12 |
-| Frontend components | 30+ |
+| Frontend components | 42 |
 | Backend perception engines | 8 |
 | Regime types | 16 |
 | TDA feature dimensions | 10 |

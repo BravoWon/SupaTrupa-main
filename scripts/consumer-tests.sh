@@ -135,19 +135,19 @@ echo ""
 # --- Test 7: Curvature Field (Geometry/Sensitivity) ---
 echo "Test 7: Curvature Field"
 test_post "curvature_field" "/api/v1/geometry/curvature-field" \
-    "{\"records\": $DRILL_RECORDS, \"grid_size\": 5}" "points"
+    "{\"records\": $DRILL_RECORDS, \"resolution\": 5}" "points"
 echo ""
 
 # --- Test 8: Regime Fingerprint ---
 echo "Test 8: Regime Fingerprint"
 test_post "fingerprint" "/api/v1/tda/fingerprint" \
-    "{\"point_cloud\": $POINT_CLOUD}" "fingerprint"
+    "{\"point_cloud\": $POINT_CLOUD}" "matched_regime"
 echo ""
 
 # --- Test 9: Topology Forecast ---
 echo "Test 9: Topology Forecast"
 test_post "forecast" "/api/v1/tda/forecast" \
-    "{\"signatures\": [{\"betti_0\":3,\"betti_1\":1,\"entropy_h0\":0.5,\"entropy_h1\":0.3,\"max_lifetime_h0\":2.1,\"max_lifetime_h1\":1.2,\"mean_lifetime_h0\":0.8,\"mean_lifetime_h1\":0.4,\"n_features_h0\":5,\"n_features_h1\":2},{\"betti_0\":4,\"betti_1\":1,\"entropy_h0\":0.6,\"entropy_h1\":0.35,\"max_lifetime_h0\":2.3,\"max_lifetime_h1\":1.3,\"mean_lifetime_h0\":0.9,\"mean_lifetime_h1\":0.45,\"n_features_h0\":6,\"n_features_h1\":2}], \"horizon\": 3}" "forecast"
+    "{\"point_cloud\": $POINT_CLOUD, \"window_size\": 3, \"stride\": 1, \"n_ahead\": 3}" "forecast"
 echo ""
 
 # --- Test 10: Shadow Attractor Analysis ---
@@ -159,13 +159,13 @@ echo ""
 # --- Test 11: Advisory Recommend ---
 echo "Test 11: Advisory Recommend"
 test_post "advisory_recommend" "/api/v1/advisory/recommend" \
-    "{\"records\": $DRILL_RECORDS, \"target_regime\": \"OPTIMAL\"}" "steps"
+    "{\"current_params\": {\"wob\":15,\"rpm\":120,\"rop\":45,\"torque\":8500,\"spp\":3200}, \"current_regime\": \"NORMAL\", \"target_regime\": \"OPTIMAL\"}" "steps"
 echo ""
 
 # --- Test 12: Field Register ---
 echo "Test 12: Field Register"
 test_post "field_register" "/api/v1/field/register" \
-    "{\"well_name\": \"Test-Well-A\", \"records\": $DRILL_RECORDS}" "well_name"
+    "{\"name\": \"Test-Well-A\", \"records\": $DRILL_RECORDS}" "well_id"
 echo ""
 
 # --- Test 13: Dashboard Summary ---
