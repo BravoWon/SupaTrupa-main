@@ -1,0 +1,95 @@
+PROPRIETARY SOFTWARE LICENSE
+
+Copyright (c) 2025-2026 BJones / JTech. All Rights Reserved.
+
+NOTICE: This software and all associated documentation, source code, compiled
+binaries, algorithms, data structures, system architectures, and related
+intellectual property (collectively, the "Software") are the exclusive
+property of the copyright holder.
+
+1. GRANT OF RIGHTS
+
+   No rights are granted under this license. The Software is made available
+   for viewing purposes only via public source code repository. Viewing the
+   source code does NOT constitute a grant of any license, right, or
+   permission to use the Software in any way.
+
+2. RESTRICTIONS
+
+   You may NOT, without prior written authorization from the copyright holder:
+
+   a. Use the Software, in whole or in part, for any purpose whatsoever,
+      including but not limited to personal, academic, commercial, or
+      non-commercial use.
+
+   b. Copy, reproduce, duplicate, or otherwise replicate the Software or
+      any portion thereof.
+
+   c. Modify, adapt, translate, reverse engineer, decompile, disassemble,
+      or create derivative works based on the Software.
+
+   d. Distribute, sublicense, lease, rent, loan, sell, or otherwise transfer
+      the Software or any portion thereof to any third party.
+
+   e. Incorporate the Software or any portion thereof into any other software,
+      product, service, or system.
+
+   f. Use the Software to train, fine-tune, or otherwise develop any machine
+      learning model, artificial intelligence system, or automated code
+      generation tool.
+
+   g. Use any algorithm, method, technique, architecture, data structure,
+      or concept described in the Software to develop competing or similar
+      products or services.
+
+3. INTELLECTUAL PROPERTY
+
+   The Software embodies proprietary algorithms including but not limited to:
+   - Jones Axiomatic Framework (Axioms G1-G5)
+   - Topological Data Analysis pipeline for drilling regime classification
+   - Shadow Tensor / delay-coordinate embedding system
+   - Advisory Engine with geodesic-optimal parameter prescription
+   - Parameter Resonance Network correlation engine
+   - Field Atlas cross-well topological comparison
+   - Topology Forecaster with transition probability computation
+   - Manifold geometry engine (metric tensor, curvature field, geodesic solver)
+   - Persistence fingerprinting and attribution system
+   - CTS (Cognitive Topological System) operator interface design
+
+   All intellectual property rights, including patents, trade secrets,
+   copyrights, and trademarks, are expressly reserved.
+
+4. NO WARRANTY
+
+   THE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT. IN NO EVENT SHALL
+   THE COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY,
+   WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF,
+   OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER INABILITY TO USE
+   THE SOFTWARE.
+
+5. ENFORCEMENT
+
+   Any unauthorized use, copying, modification, or distribution of the
+   Software is a violation of this license and applicable copyright law,
+   and will be prosecuted to the fullest extent permitted by law. The
+   copyright holder reserves the right to seek injunctive relief, actual
+   damages, statutory damages, and attorney's fees.
+
+6. AUTHORIZED USE
+
+   Use of the Software is permitted ONLY with explicit, prior, written
+   authorization from the copyright holder. To request authorization,
+   contact the copyright holder directly.
+
+7. SEVERABILITY
+
+   If any provision of this license is held to be unenforceable, the
+   remaining provisions shall continue in full force and effect.
+
+8. GOVERNING LAW
+
+   This license shall be governed by and construed in accordance with the
+   laws of the United States of America and the State of Texas, without
+   regard to conflict of law principles.

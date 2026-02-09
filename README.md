@@ -266,7 +266,9 @@ tda:
 
 ## License
 
-MIT License
+**Proprietary - All Rights Reserved.** See [LICENSE](LICENSE).
+
+This software is source-available for viewing only. No rights are granted to use, copy, modify, or distribute. Contact the copyright holder for licensing inquiries.
 
 ---
 
