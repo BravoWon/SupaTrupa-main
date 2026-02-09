@@ -1,8 +1,8 @@
 # Iterative Upgrade Cycle Manifest
 
 > **Platform:** Unified Activity:State (SupaTrupa)
-> **Framework:** Jones Axiomatic (G1-G5)
-> **Process:** Manifest-driven progressive surfacing of computed capabilities
+> **Framework:** Jones Framework (G1-G5)
+> **Process:** Iterative feature development and integration
 
 ---
 
@@ -122,7 +122,7 @@ Cycle 0 (Foundation) --- DONE
 ### Cycle 0: Foundation (CTS Operator Interface) -- DONE
 
 **Insight level:** 1 -- "What IS the state?"
-**Industry disruption:** Replaces flat dashboards with topology-aware state display.
+**Operational value:** Provides topology-derived regime indicators alongside conventional parameter displays.
 
 **Delivered:**
 - Backend: `POST /api/v1/tda/persistence-diagram`, persistence_diagram in ingest response
@@ -135,7 +135,7 @@ Cycle 0 (Foundation) --- DONE
 ### Cycle 1: Parameter Resonance Network (PRN) -- DONE
 
 **Insight level:** 1 -- "What IS the state?" (cross-channel view)
-**Industry disruption:** Replaces isolated parameter monitoring with correlation topology.
+**Operational value:** Adds cross-parameter correlation view to supplement individual parameter monitoring.
 
 **Delivered:**
 - Backend: `POST /api/v1/network/compute`, ParameterCorrelationEngine (18 channels, 6 categories)
@@ -153,10 +153,10 @@ Cycle 0 (Foundation) --- DONE
 
 **Insight target:** Track drilling state evolution through topological space over time.
 
-**Industry disruption:** Replaces static SPC charts and threshold alarms with continuous
-topological trajectory tracking. Current practice: alarm when WOB > X. New practice:
-alarm when the *shape of the data* is deforming toward a dangerous topology, before any
-single parameter crosses a threshold.
+**Operational value:** Supplements threshold-based alarms with topological trajectory tracking.
+Conventional approach: alarm when WOB > X. This approach: flag when multi-parameter data
+patterns shift toward a topology associated with undesirable regimes, potentially before
+individual parameters cross thresholds.
 
 **Backend scope:**
 - Modified: `server.py` (4 new endpoints, 4 Pydantic models)
@@ -185,10 +185,10 @@ single parameter crosses a threshold.
 
 **Insight target:** Visualize the shape of the ROP-warped drilling parameter space.
 
-**Industry disruption:** Replaces Euclidean parameter spaces with Riemannian geometry.
-Current practice: plot WOB vs ROP as flat scatter. New practice: show the *curvature*
-of parameter space, revealing where small changes cause large effects (high curvature)
-vs where the system is insensitive (flat regions).
+**Operational value:** Augments standard parameter cross-plots with sensitivity mapping.
+Conventional approach: plot WOB vs ROP as a flat scatter. This approach: map non-linear
+parameter sensitivity, highlighting regions where small changes may produce large effects
+(high sensitivity) vs regions where the system is relatively insensitive (low sensitivity).
 
 **Backend scope:**
 - New: Metric tensor endpoint (`POST /api/v1/geometry/metric-tensor`)
@@ -214,10 +214,10 @@ vs where the system is insensitive (flat regions).
 **Insight target:** Identify the topological features (specific persistence pairs) that
 define each regime, enabling causal attribution.
 
-**Industry disruption:** Replaces post-hoc log review with real-time causal fingerprinting.
-Current practice: after an event, geologists review logs to find the cause. New practice:
-the system identifies *which topological features* are driving the current regime in
-real time, pointing to the specific drilling parameter interactions responsible.
+**Operational value:** Supplements post-event log review with real-time regime attribution.
+Conventional approach: after an event, geologists review logs to identify contributing factors.
+This approach: the system highlights which topological features are associated with the
+current regime classification, indicating the drilling parameter interactions involved.
 
 **Delivered:**
 - Backend: 4 endpoints (`POST /api/v1/tda/fingerprint`, `POST /api/v1/tda/attribute`, `POST /api/v1/tda/compare-regimes`, `GET /api/v1/tda/fingerprint-library`)
@@ -236,10 +236,10 @@ real time, pointing to the specific drilling parameter interactions responsible.
 **Insight target:** Forecast the topological state N windows ahead, predicting regime
 transitions before they occur.
 
-**Industry disruption:** Replaces reactive alarms with predictive topology forecasting.
-Current practice: alarm fires when a threshold is crossed. New practice: forecast that
-the topological trajectory is converging toward a dangerous regime, issuing a warning
-minutes/hours before the event.
+**Operational value:** Adds trend-based topology forecasting to supplement threshold alarms.
+Conventional approach: alarm fires when a threshold is crossed. This approach: extrapolate
+topological trajectory trends and estimate the likelihood of transitioning toward
+undesirable regimes, aiming to provide advance notice where data supports it.
 
 **Delivered:**
 - Backend: New `perception/topology_forecaster.py` with TopologyForecaster class
@@ -261,10 +261,11 @@ minutes/hours before the event.
 **Insight target:** Surface delay-coordinate embeddings (Takens' theorem) that reveal
 hidden dynamical structure invisible in raw parameter space.
 
-**Industry disruption:** Replaces single-parameter time series with state-space
-reconstructions. Current practice: look at WOB time series. New practice: embed WOB
-in delay coordinates to reveal attractor structure, identifying deterministic chaos
-vs stochastic noise, and detecting early warning signals of bifurcations.
+**Operational value:** Adds delay-coordinate embedding to supplement raw time series views.
+Conventional approach: view individual parameter time series. This approach: embed parameters
+in delay coordinates (Takens' theorem) to characterize attractor structure, helping
+distinguish deterministic dynamics from noise, and potentially identifying early indicators
+of state transitions.
 
 **Delivered:**
 - Backend: 2 endpoints (`POST /api/v1/shadow/embed`, `POST /api/v1/shadow/attractor`)
@@ -285,10 +286,10 @@ vs stochastic noise, and detecting early warning signals of bifurcations.
 **Insight target:** Compute geodesic-optimal parameter prescriptions that navigate the
 drilling manifold toward the target regime.
 
-**Industry disruption:** Replaces generic recommendations with geodesic-optimal parameter
-prescriptions. Current practice: "reduce WOB by 10%." New practice: compute the shortest
-path through ROP-warped parameter space from current state to target regime, prescribing
-exact parameter trajectories.
+**Operational value:** Provides computed parameter adjustment sequences based on regime geometry.
+Conventional approach: general guidance such as "reduce WOB by 10%." This approach: compute
+a suggested parameter trajectory from current state toward the target regime, accounting for
+parameter coupling and sensitivity.
 
 **Delivered:**
 - Backend: New `perception/advisory_engine.py` (AdvisoryEngine class, ParameterStep, AdvisoryResult, RiskAssessment)
@@ -311,10 +312,10 @@ exact parameter trajectories.
 **Insight target:** Build a topological atlas across multiple wells, enabling field-wide
 pattern recognition and cross-well learning.
 
-**Industry disruption:** Replaces per-well offset analysis with field-wide topological
-atlas. Current practice: compare offset wells by depth-matched log curves. New practice:
-compare wells by their topological signatures, identifying formation-driven vs
-drilling-practice-driven regime patterns across the field.
+**Operational value:** Adds topological signature comparison to supplement conventional offset
+well analysis. Conventional approach: compare offset wells by depth-matched log curves.
+This approach: compare wells by their topological signatures, aiming to distinguish
+formation-driven from drilling-practice-driven regime patterns across the field.
 
 **Delivered:**
 - Backend: New `perception/field_atlas.py` (FieldAtlas class, WellEntry, WellComparison, PatternMatch)
@@ -340,10 +341,10 @@ drilling-practice-driven regime patterns across the field.
 **Insight target:** Turn static LAS display into interactive depth-window stepping with
 per-window regime/TDA analysis.
 
-**Industry disruption:** Replaces static log display with interactive depth-window analysis.
-Current practice: load LAS file, view entire well at once. New practice: slide through
+**Operational value:** Adds interactive depth-window analysis to static log display.
+Conventional approach: load LAS file, view entire well at once. This approach: step through
 depth windows re-running regime classification and TDA at each position, building a
-colored regime strip showing formation behavior evolution along the wellbore.
+color-coded regime strip showing regime evolution along the wellbore.
 
 **Delivered:**
 - Backend: `POST /api/v1/las/{file_id}/analyze-window` composite endpoint
@@ -364,10 +365,11 @@ colored regime strip showing formation behavior evolution along the wellbore.
 **Insight target:** Unified "at a glance" view aggregating key indicators from all cycles
 in drilling operator language.
 
-**Industry disruption:** Replaces scattered technical panels with unified operational dashboard.
-Current practice: navigate multiple specialized views to understand well status. New practice:
-single dashboard shows regime, parameters, pattern analysis, predictability, and recommended
-actions in plain drilling language with color-coded status tiles.
+**Operational value:** Consolidates key indicators into a single operational overview.
+Conventional approach: navigate multiple specialized views to understand well status.
+This approach: a single dashboard summarizing regime, parameters, pattern analysis,
+predictability, and suggested actions in standard drilling terminology with color-coded
+status tiles.
 
 **Delivered:**
 - Backend: `POST /api/v1/dashboard/summary` composite endpoint
@@ -389,10 +391,10 @@ actions in plain drilling language with color-coded status tiles.
 **Insight target:** Replace mathematical labels with drilling operator terms across all
 existing components. No new computations, pure UI language translation.
 
-**Industry disruption:** Removes the last barrier to operator adoption — mathematical jargon.
-Current practice: panels show β₀, Lyapunov exponents, Ricci curvature. New practice:
-panels show Drilling Zones, Predictability Index, Parameter Sensitivity — terms that
-operators understand without a math degree.
+**Operational value:** Translates analytical labels into standard drilling terminology.
+Before: panels showed β₀, Lyapunov exponents, Ricci curvature. After: panels show
+Drilling Zones, Predictability Index, Parameter Sensitivity -- terms familiar to
+drilling engineers and operations staff.
 
 **Delivered:**
 - Translation applied across 17 components:

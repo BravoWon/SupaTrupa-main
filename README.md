@@ -1,31 +1,31 @@
 # Unified Activity:State Platform
 
-**Cognitive Command Center for State-Adaptive Computational Intelligence**
+**Multi-Parameter Drilling Analysis & Monitoring Platform**
 
-A production-ready synthesis of two engineering systems, combining the theoretical rigor of the Jones Framework with the visual power of real-time 3D dashboards.
+A full-stack system combining the Jones Framework analytical backend with real-time dashboard visualizations for drilling operations monitoring.
 
 ---
 
 ## Features
 
-### Computational Engine (Python Backend)
-- **ConditionState/ActivityState Primitives**: Immutable atomic data structures with Riemannian metric tensors
-- **TDA Pipeline**: Persistent homology via Ripser for regime detection
-- **SANS Architecture**: Mixture of Experts with LoRA hot-swap capability
-- **Linguistic Arbitrage**: NLP-based kinetic triggers for sentiment-driven regime shifts
-- **Hardware Acceleration**: Automatic GPU/NPU detection (CUDA, Metal, CPU fallback)
+### Analytical Engine (Python Backend)
+- **ConditionState/ActivityState Primitives**: Immutable data structures with configurable metric tensors
+- **TDA Pipeline**: Persistent homology via Ripser for regime classification
+- **SANS Architecture**: Mixture of Experts with LoRA adapter switching
+- **NLP Event Detection**: Text-based triggers for regime shift identification
+- **Hardware Support**: GPU/NPU detection (CUDA, Metal, CPU fallback)
 
 ### Visualization Layer (React Frontend)
-- **Master Dashboard**: Unified operational overview with regime, topology, dynamics, and advisory status
-- **CTS Operator Interface**: ISO 11064-compliant dark mode with AttractorManifold, PersistenceBarcode, TrustGauge
-- **GT-MoE Optimizer**: Real-time regime classification with Betti number displays
+- **Master Dashboard**: Operational overview with regime, topology, dynamics, and advisory status
+- **Operator Interface**: ISO 11064-compliant dark mode with attractor display, persistence barcode, and trust gauge
+- **Regime Classifier Display**: Regime classification with Betti number readouts
 - **12 Specialized Tabs**: Dashboard, CTS, Well Path, Wire Mesh, Network, Sensitivity, Signature, Dynamics, Forecast, Advisory, Field Map, Analyzer
-- **Modern UI**: React 19, Radix UI, Tailwind CSS, Framer Motion
+- **Frontend Stack**: React 19, Radix UI, Tailwind CSS, Framer Motion
 
 ### Integration
 - **REST/WebSocket API**: FastAPI bridge connecting Python and React
 - **Shared Type System**: JSON Schemas validated across Python and TypeScript
-- **Real-time Streaming**: Live regime updates and signal alerts
+- **Streaming Updates**: WebSocket-based regime updates and alerts
 
 ---
 
@@ -160,32 +160,32 @@ NODE_ENV=production node dist/index.js
 
 ## Core Concepts
 
-### The Geometry of Being (GoB)
+### Analysis Framework
 
-The system operates on the principle that complex systems exist in distinct "thermodynamic phases" (Activity:States), where the rules of physics themselves change between regimes.
+The system models drilling operations as existing in distinct operational regimes (Activity:States), where parameter relationships and sensitivities differ between regimes.
 
-- **ConditionState**: Atomic, immutable observations (like spin network nodes in Loop Quantum Gravity)
-- **ActivityState**: Macroscopic regimes with distinct metric tensors
-- **Geodesics**: Optimal paths that curve according to regime geometry
+- **ConditionState**: Immutable, timestamped observation records
+- **ActivityState**: Operational regimes with associated parameter weighting
+- **Optimal Paths**: Computed parameter trajectories between states based on regime geometry
 
-### Topological Data Analysis
+### Topological Data Analysis (TDA)
 
-The system "perceives" regime structure through persistent homology:
+The system uses persistent homology to characterize regime structure from multi-parameter data:
 
-| Betti Number | Meaning | Drilling Interpretation | Operator Term |
-|--------------|---------|------------------------|---------------|
+| Betti Number | Mathematical Meaning | Drilling Interpretation | Operator Term |
+|--------------|----------------------|------------------------|---------------|
 | β₀ | Connected components | Distinct drilling zones | Drilling Zones |
 | β₁ | Loops/cycles | Coupled parameter oscillations | Coupling Loops |
-| β₂ | Voids | Structural gaps in parameter space | - |
+| β₂ | Voids | Gaps in parameter space coverage | - |
 
-### SANS Architecture
+### SANS Architecture (Mixture of Experts)
 
-"Symbolic Abstract Neural Search" - specialized experts for each regime:
+Specialized analytical models selected per regime:
 
-1. **Regime Detection**: TDA pipeline classifies current state
-2. **Expert Selection**: Route to regime-specific expert
-3. **Hot-Swap**: LoRA adapters enable instant switching
-4. **Continuity Guard**: Topological safety enforcement
+1. **Regime Detection**: TDA pipeline classifies current operational state
+2. **Expert Selection**: Routes to regime-specific analytical model
+3. **Adapter Switching**: LoRA adapters allow model switching without full reload
+4. **Continuity Validation**: Checks for valid transitions between states
 
 ---
 
@@ -275,64 +275,64 @@ This software is source-available for viewing only. No rights are granted to use
 ## Credits
 
 Synthesized from:
-- **Bestest-main** (jones_framework): State-Adaptive Computational Intelligence Framework
-- **activity-state-dashboard**: Drilling Intelligence Platform Enterprise Beta v1.0
+- **Bestest-main** (jones_framework): Multi-parameter analysis framework
+- **activity-state-dashboard**: Drilling monitoring platform beta v1.0
 
 ---
 
 ## Les Logic: BHA Optimization Methodology
 
-The **Les Logic** methodology applies specifically to Bottom Hole Assembly (BHA) optimization within this platform. It provides a fundamentally different approach to drilling dysfunction detection and BHA configuration recommendations.
+The **Les Logic** methodology applies to Bottom Hole Assembly (BHA) optimization within this platform. It uses multi-parameter topological analysis to support drilling dysfunction detection and BHA configuration recommendations.
 
 **For comprehensive documentation, see: [docs/LES_LOGIC_BHA_OPTIMIZATION.md](docs/LES_LOGIC_BHA_OPTIMIZATION.md)**
 
 ### Quick Overview
 
-Les Logic addresses a critical gap in current drilling optimization: traditional methods are **reactive** (detecting problems after they occur) and **threshold-based** (missing complex system dynamics).
+Les Logic supplements conventional threshold-based monitoring with topological analysis of multi-parameter drilling data. Where conventional methods check individual parameters against fixed limits, Les Logic analyzes the relationships between parameters to identify regime changes.
 
-**Current Industry Approach:**
+**Conventional Approach:**
 ```
-Sensor Data → Threshold Check → Alert (after damage begins)
+Sensor Data → Threshold Check → Alert
 ```
 
 **Les Logic Approach:**
 ```
-Sensor Data → Topological Analysis → Regime Detection → BHA Recommendation (before damage)
+Sensor Data → Topological Analysis → Regime Detection → BHA Recommendation
 ```
 
-### The Three Axioms
+### Design Principles
 
-| Axiom | Application to BHA Optimization |
-|-------|--------------------------------|
-| **Axiomatic Alignment** | Every measurement connects to physical BHA behavior—torque causes rotation, WOB causes penetration |
-| **Non-Euclidean Topology** | Drilling state space is curved: ROP changes "cost" different amounts depending on where you are in the parameter space |
-| **Cognitive Ergonomics** | Outputs are actionable: "Add 1 stabilizer" not "β₁ increased" |
+| Principle | Application to BHA Optimization |
+|-----------|--------------------------------|
+| **Physical Grounding** | Every measurement connects to physical BHA behavior -- torque causes rotation, WOB causes penetration |
+| **Multi-Parameter Analysis** | Drilling parameter space has non-linear relationships: ROP sensitivity varies depending on operating point |
+| **Operator-Readable Output** | Results are actionable: "Add 1 stabilizer" rather than raw Betti numbers |
 
 ### Key Capabilities
 
-1. **Regime Detection via Persistent Homology**
-   - Analyzes drilling data as point clouds
+1. **Regime Classification via Persistent Homology**
+   - Analyzes drilling data as multi-dimensional point clouds
    - Computes Betti numbers to identify oscillatory behavior (stick-slip, whirl, bit bounce)
-   - Detects regime transitions *before* traditional thresholds trigger
+   - May provide earlier indication of regime transitions compared to single-parameter thresholds
 
-2. **Physics-Based Recommendations**
+2. **Rule-Based Recommendations**
    | Detected Regime | Root Cause | Les Logic Recommendation |
    |-----------------|------------|--------------------------|
    | Whirl | BHA eccentricity | Add stabilizer |
    | Stick-Slip | Torsional resonance | Reduce motor bend angle |
    | Bit Bounce | Axial instability | Increase flow restrictor |
 
-3. **Riemannian Metric for Drilling**
-   - Quantifies "cost" of drilling operations in curved state space
-   - Geodesics represent optimal drilling paths
-   - Ricci curvature indicates formation difficulty changes
+3. **Parameter Space Modeling**
+   - Models drilling parameter interactions using metric tensors
+   - Computes suggested parameter trajectories between operating states
+   - Curvature mapping indicates regions of high parameter sensitivity
 
-### Why a New Approach?
+### Rationale
 
-Current methods fail because they treat drilling parameters as independent variables with fixed thresholds. In reality:
+Conventional single-parameter threshold methods treat drilling parameters as independent variables. In practice:
 
 - Parameters are **coupled** (WOB affects torque affects ROP affects vibration)
-- Regime transitions are **abrupt** (small changes → large effects at critical points)
-- Dysfunction is **topological** (the *shape* of data in phase space matters, not just values)
+- Regime transitions can be **non-linear** (small changes can produce large effects near critical points)
+- Multi-parameter patterns (the *shape* of data in phase space) may carry information that individual parameter values do not
 
-Les Logic uses Topological Data Analysis (TDA) to detect these patterns that traditional monitoring misses—often preventing damage events from undetected whirl or stick-slip.
+Les Logic uses Topological Data Analysis (TDA) to characterize these multi-parameter patterns, with the goal of supplementing conventional monitoring.
