@@ -1,0 +1,35 @@
+{
+  "name": "unified-activity-state-platform",
+  "version": "1.0.0",
+  "private": true,
+  "packageManager": "pnpm@10.4.1",
+  "scripts": {
+    "dev": "concurrently \"pnpm run dev:backend\" \"pnpm run dev:frontend\"",
+    "dev:backend": "cd backend && uvicorn jones_framework.api.server:app --reload --port 8000",
+    "dev:frontend": "cd frontend && pnpm dev",
+    "build": "cd frontend && pnpm build",
+    "test": "pnpm run test:backend && pnpm run test:frontend",
+    "test:backend": "cd backend && pytest -v",
+    "test:frontend": "cd frontend && pnpm test",
+    "lint": "pnpm run lint:backend && pnpm run lint:frontend",
+    "lint:backend": "cd backend && black --check jones_framework && mypy jones_framework",
+    "lint:frontend": "cd frontend && pnpm check",
+    "clean": "rm -rf frontend/node_modules frontend/dist backend/*.egg-info",
+    "jones": "cd backend && jones",
+    "start": "cd backend && jones start",
+    "stop": "cd backend && jones stop",
+    "status": "cd backend && jones status",
+    "doctor": "cd backend && jones doctor",
+    "wizard": "cd backend && jones wizard"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  },
+  "pnpm": {
+    "overrides": {}
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  }
+}

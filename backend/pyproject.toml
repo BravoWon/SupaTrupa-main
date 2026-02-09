@@ -1,0 +1,100 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "jones-framework"
+version = "0.1.0"
+description = "State-adaptive computational intelligence framework"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+authors = [
+    {name = "Jones Framework Team"}
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+dependencies = [
+    "numpy>=1.21.0",
+    "scipy>=1.7.0",
+    "scikit-learn>=1.0.0",
+    "pandas>=1.5.0",
+    "pyyaml>=6.0",
+    "lasio>=0.31",
+]
+
+[project.optional-dependencies]
+tda = [
+    "ripser>=0.6.0",
+    "persim>=0.3.0",
+]
+ml = [
+    "torch>=2.0.0",
+    "transformers>=4.25.0",
+]
+ui = [
+    "streamlit>=1.28.0",
+    "plotly>=5.15.0",
+]
+api = [
+    "fastapi>=0.104.0",
+    "uvicorn[standard]>=0.24.0",
+    "pydantic>=2.5.0",
+    "websockets>=12.0",
+]
+cli = [
+    "typer[all]>=0.9.0",
+    "rich>=13.0.0",
+]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "black>=23.0.0",
+    "mypy>=1.0.0",
+    "httpx>=0.25.0",
+]
+all = [
+    "ripser>=0.6.0",
+    "persim>=0.3.0",
+    "torch>=2.0.0",
+    "transformers>=4.25.0",
+    "streamlit>=1.28.0",
+    "plotly>=5.15.0",
+    "fastapi>=0.104.0",
+    "uvicorn[standard]>=0.24.0",
+    "pydantic>=2.5.0",
+    "websockets>=12.0",
+    "typer[all]>=0.9.0",
+    "rich>=13.0.0",
+]
+
+[project.scripts]
+jones = "jones_framework.cli.main:main"
+jones-wizard = "jones_framework.cli.wizard.engine:run_wizard"
+jones-dashboard = "jones_framework.ui.dashboard:run_dashboard"
+jones-api = "jones_framework.api.server:main"
+
+[tool.setuptools.packages.find]
+include = ["jones_framework*"]
+
+[tool.black]
+line-length = 100
+target-version = ['py39', 'py310', 'py311']
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-v --cov=jones_framework"

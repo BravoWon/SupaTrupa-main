@@ -1,0 +1,179 @@
+# =============================================================================
+# Jones Framework Configuration
+# =============================================================================
+# This file provides defaults that can be overridden via environment variables.
+# Environment variables use JONES_ prefix and __ for nesting.
+# Example: JONES_TDA__MAX_DIMENSION=2 overrides tda.max_dimension
+# =============================================================================
+
+# Environment: development | testing | staging | production
+environment: development
+
+# -----------------------------------------------------------------------------
+# Hardware Configuration
+# -----------------------------------------------------------------------------
+hardware:
+  # Device preference: auto | cuda | metal | cpu
+  # - auto: Automatically detect best available (recommended)
+  # - cuda: Force NVIDIA GPU (requires CUDA toolkit)
+  # - metal: Force Apple Silicon GPU (macOS only)
+  # - cpu: Force CPU-only mode
+  device_preference: auto
+
+  # Number of worker threads (0 = auto-detect based on CPU cores)
+  num_workers: 0
+
+  # Memory limit in GB (0 = no limit)
+  memory_limit_gb: 0
+
+# -----------------------------------------------------------------------------
+# TDA Pipeline Configuration
+# -----------------------------------------------------------------------------
+tda:
+  # Takens embedding dimension for time delay embedding
+  embedding_dim: 3
+
+  # Maximum homology dimension to compute
+  # - 0: Only connected components (Betti-0)
+  # - 1: Components + loops (Betti-0, Betti-1)
+  # - 2: Components + loops + voids (Betti-0, Betti-1, Betti-2)
+  # NOTE: Higher dimensions increase computation time significantly
+  max_dimension: 1
+
+  # Time delay for Takens embedding
+  time_delay: 1
+
+  # Ripser computation threshold (max filtration value)
+  threshold: 2.0
+
+  # Minimum persistence to consider significant
+  persistence_threshold: 0.01
+
+# -----------------------------------------------------------------------------
+# SANS (Mixture of Experts) Configuration
+# -----------------------------------------------------------------------------
+sans:
+  # Number of regime-specific experts
+  num_experts: 6
+
+  # LoRA adapter rank for fine-tuning
+  lora_rank: 8
+
+  # Alpha scaling factor for LoRA
+  lora_alpha: 16
+
+  # Expert selection confidence threshold
+  confidence_threshold: 0.5
+
+  # Enable continuity guard for smooth transitions
+  continuity_guard: true
+
+# -----------------------------------------------------------------------------
+# Regime Classification
+# -----------------------------------------------------------------------------
+regimes:
+  # Available regime types
+  types:
+    - STABLE
+    - MOMENTUM
+    - MEAN_REVERTING
+    - HIGH_VOLATILITY
+    - TRANSITION
+    - CRISIS
+
+  # Transition detection sensitivity (0.0-1.0)
+  transition_sensitivity: 0.3
+
+  # Minimum samples for regime classification
+  min_samples: 10
+
+# -----------------------------------------------------------------------------
+# API Server Configuration
+# -----------------------------------------------------------------------------
+api:
+  host: "0.0.0.0"
+  port: 8000
+
+  # CORS allowed origins (use ["*"] for development)
+  cors_origins:
+    - "http://localhost:5173"
+    - "http://localhost:3000"
+
+  # WebSocket configuration
+  websocket:
+    ping_interval: 30
+    ping_timeout: 10
+    max_connections: 100
+
+# -----------------------------------------------------------------------------
+# Inference Optimization
+# -----------------------------------------------------------------------------
+inference:
+  # Batch size for inference (adjust based on available VRAM)
+  batch_size: 32
+
+  # Chunk size for processing long sequences
+  chunk_size: 512
+
+  # Overlap between chunks
+  chunk_overlap: 64
+
+  # Quantization: none | fp16 | int8 | int4
+  quantization: none
+
+  # Enable KV cache for transformer models
+  kv_cache: true
+
+# -----------------------------------------------------------------------------
+# Logging Configuration
+# -----------------------------------------------------------------------------
+logging:
+  # Log level: DEBUG | INFO | WARNING | ERROR
+  level: INFO
+
+  # Output format: json | text
+  format: text
+
+  # Log file path (null for stdout only)
+  file: null
+
+  # Rotation: daily | weekly | size
+  rotation: daily
+
+  # Retention in days
+  retention_days: 30
+
+# -----------------------------------------------------------------------------
+# Caching Configuration
+# -----------------------------------------------------------------------------
+cache:
+  # Backend: memory | redis | disk
+  backend: memory
+
+  # Default TTL in seconds
+  default_ttl: 300
+
+  # Maximum cache entries
+  max_entries: 10000
+
+  # Redis configuration (if backend=redis)
+  redis:
+    host: localhost
+    port: 6379
+    db: 0
+
+# -----------------------------------------------------------------------------
+# Feature Flags
+# -----------------------------------------------------------------------------
+features:
+  # Enable new trading engine v2
+  new_trading_engine: false
+
+  # Enable advanced analytics
+  advanced_analytics: false
+
+  # Enable real-time streaming
+  realtime_streaming: true
+
+  # Enable TDA visualization endpoints
+  tda_visualization: true

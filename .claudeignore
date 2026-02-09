@@ -1,0 +1,24 @@
+# Dependencies & build
+node_modules/
+.venv/
+*.egg-info/
+frontend/dist/
+**/__pycache__/
+pnpm-lock.yaml
+
+# Large data files
+DM_time.txt
+frontend/client/public/data/drilling_data.json
+
+# Generated / cache
+.git/
+.mypy_cache/
+.pytest_cache/
+htmlcov/
+*.pt
+*.pth
+*.safetensors
+
+# IDE / OS
+.vscode/
+.DS_Store
