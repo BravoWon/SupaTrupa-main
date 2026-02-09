@@ -8,7 +8,7 @@
 
 ## What Is This?
 
-A cognitive topological system (CTS) for real-time drilling intelligence. It uses Topological Data Analysis (TDA) to detect drilling regime changes from the *shape* of multi-parameter data, rather than single-parameter thresholds.
+A multi-parameter drilling monitoring and analysis platform. It uses Topological Data Analysis (TDA) to classify drilling regimes based on multi-parameter data patterns, supplementing conventional single-parameter threshold monitoring.
 
 **For the test team:** This is the full platform after 11 development cycles. All features are implemented and the build is clean. Your job is to verify it works end-to-end.
 
@@ -16,45 +16,45 @@ A cognitive topological system (CTS) for real-time drilling intelligence. It use
 
 ## Capabilities Delivered
 
-### Cycles 0-1: Foundation (Level 1 - "What IS the state?")
+### Cycles 0-1: Foundation (Level 1 - "What is the current state?")
 - 16-regime classification via persistent homology
-- CTS operator interface (ISO 11064 dark mode)
-- Parameter Resonance Network (18-channel correlation graph)
-- Mixture of Experts with LoRA hot-swap
-- WebSocket streaming for live regime updates
+- Operator interface (ISO 11064 dark mode)
+- Parameter correlation network (18-channel graph)
+- Mixture of Experts with LoRA adapter switching
+- WebSocket streaming for regime updates
 
-### Cycles 2-3: Evolution (Level 2 - "How does the state EVOLVE?")
+### Cycles 2-3: Trend Analysis (Level 2 - "How is the state changing?")
 - Windowed TDA signatures tracking topology over time
-- Betti curves, change detection, topological heatmaps
-- Riemannian curvature field (parameter sensitivity mapping)
-- Geodesic computation (optimal paths through parameter space)
+- Betti curves, change detection, feature evolution maps
+- Parameter sensitivity mapping (curvature field)
+- Suggested parameter paths through state space
 
-### Cycle 4 & 6: Causation (Level 3 - "WHY is the state what it is?")
-- Persistence fingerprinting (10-dim regime signatures)
-- Per-feature attribution (which TDA dimensions drive each regime)
-- Shadow tensor / delay embedding (Takens' theorem)
+### Cycle 4 & 6: Attribution (Level 3 - "What factors are associated with this state?")
+- Persistence fingerprinting (10-dimension regime signatures)
+- Per-feature attribution (which TDA dimensions are associated with each regime)
+- Delay embedding analysis (Takens' theorem)
 - Attractor classification (6 types: Stable, Cyclic, Complex, Multi-Cycle, Noisy, Transitioning)
-- Lyapunov exponent + RQA analysis
+- Lyapunov exponent + Recurrence Quantification Analysis
 
-### Cycle 5: Prediction (Level 4 - "What WILL the state be?")
-- Topology trajectory forecasting with confidence bands
-- Transition probability (softmax over regime distances)
+### Cycle 5: Forecasting (Level 4 - "What might the state become?")
+- Topology trajectory extrapolation with confidence bands
+- Transition probability estimation (softmax over regime distances)
 - Risk level classification (low/medium/high/critical)
 
-### Cycle 7: Prescription (Level 5 - "What SHOULD we do?")
-- Advisory engine with parameter prescriptions
+### Cycle 7: Decision Support (Level 5 - "What are the suggested adjustments?")
+- Advisory engine with parameter adjustment suggestions
 - Correlation-aware step ordering
 - Risk assessment with mitigations and abort conditions
 
-### Cycle 8: Field Intelligence (Level 6 - "What do ALL wells tell us?")
+### Cycle 8: Field Comparison (Level 6 - "How do wells compare?")
 - Multi-well topological atlas
 - Pairwise well comparison (distance, regime similarity)
 - Pattern search across registered wells
 
-### Cycles 9-11: Operations (Level 7 - "How do I USE it?")
+### Cycles 9-11: Operations (Level 7 - "How is it used day-to-day?")
 - LAS sliding window analyzer with regime strip
-- Master dashboard (unified operational overview)
-- All math labels translated to drilling operator terms
+- Master dashboard (consolidated operational overview)
+- Analytical labels translated to standard drilling terminology
 
 ---
 
