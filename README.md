@@ -335,4 +335,4 @@ Current methods fail because they treat drilling parameters as independent varia
 - Regime transitions are **abrupt** (small changes → large effects at critical points)
 - Dysfunction is **topological** (the *shape* of data in phase space matters, not just values)
 
-Les Logic uses Topological Data Analysis (TDA) to detect these patterns that traditional monitoring misses—often preventing $500K+ damage events from undetected whirl or stick-slip.
+Les Logic uses Topological Data Analysis (TDA) to detect these patterns that traditional monitoring misses—often preventing damage events from undetected whirl or stick-slip.
