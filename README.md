@@ -194,7 +194,7 @@ Specialized analytical models selected per regime:
 | Tab | Description | Key Components |
 |-----|-------------|----------------|
 | **DASHBOARD** | Default landing - unified operational overview | MasterDashboard, DashboardTile |
-| **CTS** | Cognitive Topological System operator interface | AttractorManifold, PersistenceBarcode, TrustGauge, KPICards |
+| **CTS** | Topological analysis operator interface | AttractorManifold, PersistenceBarcode, TrustGauge, KPICards |
 | **WELL PATH** | 3D well trajectory visualization | Three.js/R3F |
 | **WIRE MESH** | LAS wire mesh visualization | LASMeshViz |
 | **NETWORK** | Parameter correlation force graph | ParameterNetworkGraph, ChannelSelector |

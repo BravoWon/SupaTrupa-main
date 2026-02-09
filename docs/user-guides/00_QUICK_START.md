@@ -6,12 +6,12 @@
 
 ## What This System Does
 
-This is a **drilling intelligence system** that watches your drilling parameters and tells you:
-- What's happening downhole (even if you can't see it)
-- When something's about to go wrong
-- What to change to fix it
+This is a **drilling monitoring system** that analyzes your drilling parameters and provides:
+- Assessment of current downhole conditions based on multi-parameter patterns
+- Indications when parameter patterns suggest a potential issue is developing
+- Suggested parameter adjustments based on the detected regime
 
-Think of it as having a very experienced hand watching the data 24/7.
+Think of it as an additional set of eyes on the data, running continuously.
 
 ---
 
@@ -28,7 +28,7 @@ Wait for the dashboard to appear (about 2 minutes).
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│  DRILLING INTELLIGENCE PLATFORM                    [STATUS] │
+│  DRILLING MONITORING PLATFORM                    [STATUS] │
 ├─────────────────────────────────────────────────────────────┤
 │                                                             │
 │  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐ │
@@ -68,7 +68,7 @@ When something's wrong, the system tells you what to do in plain English:
 "Stick-slip detected. Reduce WOB by 5 klbs or increase RPM by 10."
 ```
 
-**Just follow what it says.** The system knows drilling.
+**Review the suggestion and apply your judgment.** The system provides data-driven recommendations.
 
 ### 3. The Confidence Number
 

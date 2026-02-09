@@ -1,6 +1,6 @@
 # SupaTrupa Beta v0.1.0 - Pre-Install Test Package
 
-**Cognitive Topological System for Drilling Intelligence**
+**Multi-Parameter Drilling Monitoring & Analysis System**
 
 This is the pre-install beta release for test team evaluation. All 11 development cycles are complete and the system is ready for structured testing.
 

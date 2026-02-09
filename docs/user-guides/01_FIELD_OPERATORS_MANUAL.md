@@ -24,12 +24,12 @@ Version 1.0 | For Drillers, Toolpushers, and MWD Hands
 
 ### What This System Does
 
-The Drilling Intelligence Platform continuously monitors your drilling data and:
+The Drilling Monitoring Platform continuously analyzes your drilling data and:
 
-1. **Detects problems early** - Often before you'd notice them
-2. **Identifies the specific issue** - Not just "vibration high" but "stick-slip in the motor"
-3. **Recommends fixes** - Actionable steps you can take right now
-4. **Learns your well** - Gets better as it sees more data
+1. **Flags potential issues** - Multi-parameter analysis may indicate developing problems
+2. **Classifies the regime** - Not just "vibration high" but "stick-slip pattern detected"
+3. **Suggests adjustments** - Actionable steps you can consider
+4. **Adapts to your well** - Calibrates as it processes more data
 
 ### How It Works (Simple Version)
 
@@ -40,7 +40,7 @@ Your drilling parameters → System analyzes the SHAPE of the data → Detects p
 Traditional systems: "Vibration = 2.5g" (threshold alarm)
 This system: "Data is making loops in WOB-Torque space = stick-slip developing"
 
-The difference: We catch it BEFORE it damages tools.
+The goal: identify developing patterns that may precede tool damage.
 
 ---
 
@@ -50,7 +50,7 @@ The difference: We catch it BEFORE it damages tools.
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│  DRILLING INTELLIGENCE PLATFORM              [Well: SMITH 14-2H]   │
+│  DRILLING MONITORING PLATFORM              [Well: SMITH 14-2H]   │
 ├──────────────────┬──────────────────────────────────────────────────┤
 │                  │                                                  │
 │   REGIME         │   3D STATE SPACE                                 │
@@ -110,7 +110,7 @@ The system shows when you're moving between regimes:
 ```
 NORMAL ───────────────────────────────────────▶ STICK-SLIP
         ↑                                            ↓
-        │    (system catches it HERE)                │
+        │    (system may flag it HERE)                │
         │                                            │
      You don't                               Damage starts
      notice yet                              happening

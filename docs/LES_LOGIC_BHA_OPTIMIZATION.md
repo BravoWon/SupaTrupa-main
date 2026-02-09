@@ -8,7 +8,7 @@ This document explains:
 1. What BHA optimization is and why it matters
 2. How the industry currently approaches BHA optimization
 3. Why current methods have limitations
-4. How Les Logic provides a fundamentally different approach
+4. How Les Logic provides an alternative approach
 
 ---
 
@@ -295,7 +295,7 @@ torque ── causes ──▶ bit rotation
 # The "cost" depends on where you are in state space
 ```
 
-**3. Cognitive Ergonomics**: Insights must be actionable
+**3. Actionable Output**: Insights must be actionable
 ```
 # Bad: "Betti-1 number increased from 0 to 2"
 # Good: "Stick-slip detected. Add 1 stabilizer or reduce motor bend 0.5°"
@@ -364,7 +364,7 @@ Les Logic metric: ds² = dt² + (dd/ROP)²
 
 | Aspect | Traditional | Les Logic |
 |--------|-------------|-----------|
-| **Detection timing** | Reactive (after problem) | Proactive (topology shifts first) |
+| **Detection approach** | Threshold-based (after breach) | Topology-based (may indicate shifts earlier) |
 | **Regime identification** | Single threshold | Multi-dimensional topology |
 | **BHA recommendation** | Manual/experience | Automatic, physics-based |
 | **Adaptability** | Fixed rules | Learns geometry per-well |

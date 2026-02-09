@@ -1,6 +1,6 @@
 # User Documentation
 
-**Drilling Intelligence Platform - User Guides**
+**Drilling Monitoring Platform - User Guides**
 
 ---
 

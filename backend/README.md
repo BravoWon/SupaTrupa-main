@@ -1,8 +1,8 @@
 # Jones Framework
 
-**State-Adaptive Computational Intelligence Backend**
+**Multi-Parameter Analysis Backend**
 
-The Jones Framework is a Python library for regime-aware computational intelligence, combining Topological Data Analysis (TDA) with Mixture of Experts (MoE) architectures for real-time state classification and adaptive processing.
+The Jones Framework is a Python library for regime-aware data analysis, combining Topological Data Analysis (TDA) with Mixture of Experts (MoE) architectures for state classification and adaptive processing.
 
 ---
 
@@ -381,7 +381,7 @@ MIT License
 ## Related Documentation
 
 - [Main README](../README.md) - Full platform overview
-- [CLAUDE.md](../CLAUDE.md) - Axiom-driven development guide
+- [CLAUDE.md](../CLAUDE.md) - Development guidelines
 - [DEPLOYMENT.md](../DEPLOYMENT.md) - Enterprise deployment
 - [Les Logic](../docs/LES_LOGIC_BHA_OPTIMIZATION.md) - BHA optimization methodology
 - [Drilling Quickstart](../docs/DRILLING_QUICKSTART.md) - Field operations guide

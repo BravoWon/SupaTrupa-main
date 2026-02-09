@@ -75,7 +75,7 @@ Cycle 0 (Foundation) --- DONE
   |     |     |     |     |
   |     |     |     |     +-- Cycle 7 (Autonomous Advisory) -- Level 5
   |     |     |     |     |
-  |     |     |     |     +-- Cycle 8 (Field Intelligence) -- Level 6
+  |     |     |     |     +-- Cycle 8 (Field Comparison) -- Level 6
   |     |     |     |
   |     |     |     +-- Cycle 8 (also needs Cycle 4)
   |     |     |
@@ -110,7 +110,7 @@ Cycle 0 (Foundation) --- DONE
 | 5     | Predictive Topology         | 4     | DONE        | 2025-02    |
 | 6     | Shadow Tensor Integration   | 3     | DONE        | 2025-02    |
 | 7     | Autonomous Advisory         | 5     | DONE        | 2026-02    |
-| 8     | Field-Level Intelligence    | 6     | DONE        | 2026-02    |
+| 8     | Field-Level Comparison      | 6     | DONE        | 2026-02    |
 | 9     | LAS Sliding Analyzer        | 7     | DONE        | 2026-02    |
 | 10    | Master Dashboard            | 7     | DONE        | 2026-02    |
 | 11    | Panel Language Refinement   | 7     | DONE        | 2026-02    |
@@ -233,8 +233,8 @@ current regime classification, indicating the drilling parameter interactions in
 **Complexity:** L (large)
 **Dependencies:** Cycles 2, 4
 
-**Insight target:** Forecast the topological state N windows ahead, predicting regime
-transitions before they occur.
+**Insight target:** Forecast the topological state N windows ahead, estimating the
+likelihood of regime transitions.
 
 **Operational value:** Adds trend-based topology forecasting to supplement threshold alarms.
 Conventional approach: alarm fires when a threshold is crossed. This approach: extrapolate
@@ -303,7 +303,7 @@ parameter coupling and sensitivity.
 
 ---
 
-### Cycle 8: Field-Level Intelligence -- DONE
+### Cycle 8: Field-Level Comparison -- DONE
 
 **Insight level:** 6 -- "What do ALL wells tell us?"
 **Complexity:** L (large)

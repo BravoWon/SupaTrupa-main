@@ -16,7 +16,7 @@ When you're drilling, bad things can happen downhole that you can't see from sur
 - **Whirl**: The BHA swings around the hole like a jump rope
 - **Bit bounce**: The bit bounces up and down like a jackhammer
 
-By the time traditional sensors alarm, you've already been damaging tools for minutes. A single whirl event can cost $500K in tool damage and trip time.
+Traditional single-parameter sensors may not alarm until damage is already underway. A single whirl event can cost $500K in tool damage and trip time.
 
 ### The Solution
 
@@ -25,7 +25,7 @@ This system watches the **relationships** between your drilling parameters - not
 Traditional: "Torque is 12,000 ft-lbs" (just a number)
 This system: "Torque and WOB are making loops together" (a pattern)
 
-That loop pattern means stick-slip is starting - often minutes before traditional alarms trigger.
+That loop pattern is associated with developing stick-slip, and may appear before single-parameter thresholds are breached.
 
 ---
 
@@ -106,10 +106,10 @@ WOB + Torque + RPM → Making a loop pattern → Stick-slip developing → "Redu
 ```
 
 **Advantages**:
-1. Catches problems in formation stage
-2. Tells you exactly what's wrong
+1. May flag developing patterns before individual thresholds are breached
+2. Classifies the specific regime (not just "vibration high")
 3. Adapts to your specific well
-4. Gives specific fix, not just an alarm
+4. Provides specific suggestions, not just an alarm
 
 ---
 
@@ -307,9 +307,9 @@ It's a tool, like good instruments - makes you more effective, doesn't replace y
 
 **The system watches patterns, not just numbers.**
 
-- Patterns reveal problems early
-- Early detection prevents damage
-- Specific recommendations guide action
-- Your experience + system insight = best results
+- Patterns may indicate developing issues
+- Earlier indication supports timely response
+- Specific suggestions guide action
+- Your experience + system analysis = best results
 
 When in doubt: Watch the regime color, read the recommendation, use your judgment.
