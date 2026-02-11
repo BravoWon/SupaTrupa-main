@@ -26,6 +26,7 @@ class ConnectionType(Enum):
     CONSUMES = auto()
     MONITORS = auto()
     CONFIGURES = auto()
+    INHIBITS = auto()
 
 @dataclass
 class _c0IIBfd:
@@ -40,6 +41,10 @@ class _c0IIBfd:
     @property
     def _fl11cOA(self) -> Dict[str, ConnectionType]:
         return self.connections
+
+    @property
+    def _fll0clB(self) -> Dict[str, Any]:
+        return self.metadata
 
     def _f011BfE(self, _f00OBff: str, _flO1cOO: ConnectionType):
         self.connections[_f00OBff] = _flO1cOO
@@ -70,6 +75,8 @@ class _clOOcO4:
         self.components: Dict[str, _c0IIBfd] = {}
         self._connection_graph: Dict[str, Set[str]] = {}
         self._embeddings_computed = False
+        self._antinomies: List[Tuple[str, str]] = []
+        self._fiedler_value: Optional[float] = None
         self._core_components = self._register_core_components()
 
     # Alias for obfuscated method name
@@ -237,7 +244,10 @@ class _clOOcO4:
             eigenvalues_arr, eigenvectors_arr = eigsh(laplacian_sparse, k=k, which='SM', tol=1e-6)
             # Sort by eigenvalue (eigsh doesn't guarantee order)
             sort_idx = np.argsort(eigenvalues_arr)
+            eigenvalues_arr = eigenvalues_arr[sort_idx]
             eigenvectors_arr = eigenvectors_arr[:, sort_idx]
+            # Store Fiedler value (second-smallest eigenvalue)
+            self._fiedler_value = float(eigenvalues_arr[1]) if len(eigenvalues_arr) > 1 else 0.0
         else:
             # Fallback for very small graphs
             eigenvalues_tensor, eigenvectors_tensor = laplacian.eigh()
@@ -338,6 +348,125 @@ class _clOOcO4:
                 lines.append(f'  "{_f11lcO8}" -> "{_f00OBff}" [style={style}];')
         lines.append('}')
         return '\n'.join(lines)
+
+    # ------------------------------------------------------------------
+    # Antinomy Detection (CTS Section 6.3)
+    # ------------------------------------------------------------------
+
+    def add_antinomy(self, comp_a: str, comp_b: str):
+        """Register a mutual exclusion relation between two components.
+
+        An antinomy means comp_a and comp_b cannot both be active
+        without degrading coherence (CTS Section 6.3).
+        """
+        if comp_a not in self.components:
+            raise ValueError(f'Component not registered: {comp_a}')
+        if comp_b not in self.components:
+            raise ValueError(f'Component not registered: {comp_b}')
+        pair = tuple(sorted([comp_a, comp_b]))
+        if pair not in [(a, b) for a, b in self._antinomies]:
+            self._antinomies.append(pair)
+
+    def compute_antinomy_load(self, active_nodes: Optional[Set[str]] = None) -> float:
+        """Compute antinomy load α(t) — CTS Eq 12.
+
+        α(t) = |{v ∈ V_a : v participates in at least one antinomy}| / |V_a|
+
+        Args:
+            active_nodes: Set of currently active component names.
+                          If None, uses all registered components.
+
+        Returns:
+            float in [0, 1]: fraction of active nodes involved in contradictions.
+        """
+        if active_nodes is None:
+            active_nodes = set(self.components.keys())
+        if not active_nodes:
+            return 0.0
+
+        contradicted = set()
+        for comp_a, comp_b in self._antinomies:
+            if comp_a in active_nodes and comp_b in active_nodes:
+                contradicted.add(comp_a)
+                contradicted.add(comp_b)
+
+        return len(contradicted) / len(active_nodes)
+
+    def compute_fiedler_value(self, active_nodes: Optional[Set[str]] = None) -> float:
+        """Compute the algebraic connectivity λ₁ (Fiedler value).
+
+        λ₁ = second-smallest eigenvalue of the normalized graph Laplacian
+        of the active subgraph. λ₁ > 0 iff the graph is connected.
+
+        Args:
+            active_nodes: Set of active component names. If None, uses all.
+
+        Returns:
+            float ≥ 0: the Fiedler value.
+        """
+        if active_nodes is None:
+            # Use cached value from full graph if available
+            if self._fiedler_value is not None:
+                return self._fiedler_value
+            active_nodes = set(self.components.keys())
+
+        active_list = sorted(active_nodes & set(self.components.keys()))
+        n = len(active_list)
+        if n < 2:
+            return 0.0
+
+        name_to_idx = {name: i for i, name in enumerate(active_list)}
+
+        # Build adjacency matrix for active subgraph
+        adj = np.zeros((n, n))
+        for name in active_list:
+            i = name_to_idx[name]
+            node = self.components[name]
+            for target in node.connections:
+                if target in name_to_idx:
+                    j = name_to_idx[target]
+                    adj[i, j] = 1.0
+                    adj[j, i] = 1.0
+
+        # Compute normalized Laplacian L_sym = I - D^{-1/2} W D^{-1/2}
+        degree = adj.sum(axis=1)
+        # Handle isolated nodes
+        d_inv_sqrt = np.zeros(n)
+        for i in range(n):
+            if degree[i] > 0:
+                d_inv_sqrt[i] = 1.0 / np.sqrt(degree[i])
+
+        D_inv_sqrt = np.diag(d_inv_sqrt)
+        L_sym = np.eye(n) - D_inv_sqrt @ adj @ D_inv_sqrt
+
+        # Eigendecomposition
+        try:
+            eigenvalues = np.linalg.eigvalsh(L_sym)
+            eigenvalues.sort()
+            return float(eigenvalues[1]) if len(eigenvalues) > 1 else 0.0
+        except np.linalg.LinAlgError:
+            return 0.0
+
+    def compute_coherence_phi(self, active_nodes: Optional[Set[str]] = None) -> float:
+        """Compute coherence measure Φ — CTS Definition 6.2, Eq 12.
+
+        Φ(t) = λ₁(L_sym) · (1 - α(t))
+
+        where λ₁ is the Fiedler value and α is the antinomy load.
+
+        Args:
+            active_nodes: Set of active component names. If None, uses all.
+
+        Returns:
+            float ≥ 0: the coherence measure.
+        """
+        lambda_1 = self.compute_fiedler_value(active_nodes)
+        alpha = self.compute_antinomy_load(active_nodes)
+        return lambda_1 * (1.0 - alpha)
+
+    def get_antinomies(self) -> List[Tuple[str, str]]:
+        """Return all registered antinomy pairs."""
+        return list(self._antinomies)
 
     # Public API method aliases for ComponentRegistry
     _infer_connection_type = _fI0Ocl4

@@ -34,6 +34,20 @@ try:
 except ImportError:
     FRAMEWORK_AVAILABLE = False
 
+# CTS imports
+try:
+    from jones_framework.core.universal_tensor import (
+        UniversalTensorSpace, TensorComponent, TensorDecomposition,
+    )
+    from jones_framework.core.schematism import SchematismBridge, PatternSchema
+    from jones_framework.core.coherent_configuration import (
+        ConfigurationBuilder, AgencyFlow, CoherentConfiguration, CriticalityType,
+    )
+    from jones_framework.core.manifold_bridge import get_registry
+    CTS_AVAILABLE = True
+except ImportError:
+    CTS_AVAILABLE = False
+
 try:
     import importlib.util as _geo_ilu
     import sys as _geo_sys
@@ -132,6 +146,9 @@ class _cIO049B:
         self.correlation_engine: Optional['ParameterCorrelationEngine'] = None
         self.field_atlas: Optional['FieldAtlas'] = None
         self.active_connections: List[WebSocket] = []
+        self.uts: Optional['UniversalTensorSpace'] = None
+        self.schematism: Optional['SchematismBridge'] = None
+        self.config_builder: Optional['ConfigurationBuilder'] = None
 
     def _f0O049c(self):
         if FRAMEWORK_AVAILABLE:
@@ -140,6 +157,23 @@ class _cIO049B:
             self.moe = MixtureOfExperts(classifier=self.classifier)
             self.correlation_engine = ParameterCorrelationEngine(sample_rate_hz=1.0)
             self.field_atlas = FieldAtlas()
+            # Initialize CTS components
+            if CTS_AVAILABLE:
+                self.uts = UniversalTensorSpace(tda_pipeline=self.tda_pipeline)
+                self.schematism = SchematismBridge(
+                    tda_pipeline=self.tda_pipeline, default_epsilon=0.5,
+                )
+                # Pre-register regime schemata from classifier signatures
+                for regime_id, sig in self.classifier.signatures.items():
+                    self.schematism.register_from_regime_signature(
+                        regime_id.name, sig.feature_vector, epsilon=sig.threshold,
+                    )
+                registry = get_registry()
+                self.config_builder = ConfigurationBuilder(
+                    tda_pipeline=self.tda_pipeline,
+                    schematism_bridge=self.schematism,
+                    registry=registry,
+                )
 
     def _f0ll49d(self) -> float:
         return (datetime.utcnow() - self.start_time).total_seconds()
@@ -2651,12 +2685,203 @@ async def las_analyze_window(file_id: str, request: LASAnalyzeWindowRequest):
 
 _fI1l49f.include_router(las_router)
 
+# ============================================================
+# CTS Endpoints — Configurational Term Series (Sections 3-9)
+# ============================================================
+
+cts_router = APIRouter(prefix='/api/v1/cts', tags=['CTS'])
+
+
+class CTSDecomposeRequest(BaseModel):
+    time_series: List[float]
+
+
+class CTSTensorDistanceRequest(BaseModel):
+    series_a: List[float]
+    series_b: List[float]
+    weights: Optional[Dict[str, float]] = None
+
+
+class CTSValidateSchemaRequest(BaseModel):
+    node_name: str
+    point_cloud: List[List[float]]
+
+
+class CTSCoherentConfigRequest(BaseModel):
+    point_cloud: List[List[float]]
+    active_nodes: Optional[List[str]] = None
+
+
+class CTSCriticalityRequest(BaseModel):
+    point_cloud_prev: List[List[float]]
+    point_cloud_curr: List[List[float]]
+    active_nodes: Optional[List[str]] = None
+
+
+class CTSAgencyStepRequest(BaseModel):
+    point_cloud: List[List[float]]
+    action: List[float]
+    active_nodes: Optional[List[str]] = None
+
+
+@cts_router.post('/decompose')
+async def cts_decompose(request: CTSDecomposeRequest):
+    """Decompose a signal into U = P x T x M x F (CTS Section 3)."""
+    if not CTS_AVAILABLE or not app_state.uts:
+        raise HTTPException(status_code=503, detail='CTS not available')
+    series = np.array(request.time_series)
+    if len(series) < 4:
+        raise HTTPException(status_code=400, detail='Time series must have at least 4 points')
+    decomp = app_state.uts.decompose(series)
+    return {
+        'pattern': decomp.pattern.tolist(),
+        'temporal': decomp.temporal.tolist(),
+        'magnitude': decomp.magnitude.tolist(),
+        'frequency': decomp.frequency.tolist(),
+        'dimensions': {k.name: v for k, v in decomp.component_dimensions().items()},
+    }
+
+
+@cts_router.post('/tensor-distance')
+async def cts_tensor_distance(request: CTSTensorDistanceRequest):
+    """Compute weighted tensor distance d_U (CTS Eq 8)."""
+    if not CTS_AVAILABLE or not app_state.uts:
+        raise HTTPException(status_code=503, detail='CTS not available')
+    u1 = app_state.uts.decompose(np.array(request.series_a))
+    u2 = app_state.uts.decompose(np.array(request.series_b))
+    weights = None
+    if request.weights:
+        weights = {TensorComponent[k]: v for k, v in request.weights.items()}
+    dist = app_state.uts.compute_tensor_distance(u1, u2, weights)
+    return {'distance': dist}
+
+
+@cts_router.post('/validate-schema')
+async def cts_validate_schema(request: CTSValidateSchemaRequest):
+    """Validate schematism for a KIM node (CTS Eq 14)."""
+    if not CTS_AVAILABLE or not app_state.schematism:
+        raise HTTPException(status_code=503, detail='CTS not available')
+    point_cloud = np.array(request.point_cloud)
+    if len(point_cloud) < 3:
+        raise HTTPException(status_code=400, detail='Point cloud must have at least 3 points')
+    result = app_state.schematism.validate_grounding(request.node_name, point_cloud)
+    return {
+        'node_name': result.node_name,
+        'is_grounded': result.is_grounded,
+        'bottleneck_distance': result.bottleneck_distance,
+        'epsilon': result.epsilon,
+        'feature_distance': result.feature_distance,
+        'message': result.message,
+        'is_transcendental_error': result.is_transcendental_error,
+    }
+
+
+@cts_router.post('/coherent-config')
+async def cts_coherent_config(request: CTSCoherentConfigRequest):
+    """Build a full CoherentConfiguration Ct = (Q, Φ) — CTS Section 8."""
+    if not CTS_AVAILABLE or not app_state.config_builder:
+        raise HTTPException(status_code=503, detail='CTS not available')
+    point_cloud = np.array(request.point_cloud)
+    if len(point_cloud) < 3:
+        raise HTTPException(status_code=400, detail='Point cloud must have at least 3 points')
+    active = set(request.active_nodes) if request.active_nodes else None
+    config = app_state.config_builder.build(point_cloud, active)
+    return config.to_dict()
+
+
+@cts_router.post('/detect-criticality')
+async def cts_detect_criticality(request: CTSCriticalityRequest):
+    """Detect Type II criticality between two states (CTS Definition 8.3)."""
+    if not CTS_AVAILABLE or not app_state.config_builder:
+        raise HTTPException(status_code=503, detail='CTS not available')
+    cloud_prev = np.array(request.point_cloud_prev)
+    cloud_curr = np.array(request.point_cloud_curr)
+    active = set(request.active_nodes) if request.active_nodes else None
+    config_prev = app_state.config_builder.build(cloud_prev, active)
+    config_curr = app_state.config_builder.build(cloud_curr, active)
+    criticality = app_state.config_builder.detect_criticality(config_prev, config_curr)
+    valid, msg = app_state.config_builder.validate_transition(config_prev, config_curr)
+    return {
+        'criticality': criticality.name,
+        'transition_valid': valid,
+        'transition_message': msg,
+        'config_prev': config_prev.to_dict(),
+        'config_curr': config_curr.to_dict(),
+    }
+
+
+@cts_router.post('/agency-step')
+async def cts_agency_step(request: CTSAgencyStepRequest):
+    """Plan a single agency step (CTS Section 9, Eq 17-18)."""
+    if not CTS_AVAILABLE or not app_state.config_builder:
+        raise HTTPException(status_code=503, detail='CTS not available')
+    point_cloud = np.array(request.point_cloud)
+    action = np.array(request.action)
+    active = set(request.active_nodes) if request.active_nodes else None
+    flow = AgencyFlow(app_state.config_builder)
+    step = flow.plan_step(point_cloud, action, active)
+    return {
+        'step_index': step.step_index,
+        'is_valid': step.is_valid,
+        'pre_condition_met': step.pre_condition_met,
+        'post_condition_met': step.post_condition_met,
+        'continuity_preserved': step.continuity_preserved,
+        'cost': step.cost,
+        'message': step.message,
+        'config_before': step.config_before.to_dict() if step.config_before else None,
+        'config_after': step.config_after.to_dict() if step.config_after else None,
+    }
+
+
+@cts_router.get('/coherence-phi')
+async def cts_coherence_phi():
+    """Current coherence measure Φ = λ₁ · (1 - α) — CTS Eq 12."""
+    if not CTS_AVAILABLE:
+        raise HTTPException(status_code=503, detail='CTS not available')
+    registry = get_registry()
+    phi = registry.compute_coherence_phi()
+    fiedler = registry.compute_fiedler_value()
+    alpha = registry.compute_antinomy_load()
+    return {
+        'phi': phi,
+        'fiedler_value': fiedler,
+        'antinomy_load': alpha,
+        'num_components': len(registry.components),
+        'antinomies': registry.get_antinomies(),
+    }
+
+
+@cts_router.get('/schemata')
+async def cts_list_schemata():
+    """List all registered pattern schemata."""
+    if not CTS_AVAILABLE or not app_state.schematism:
+        raise HTTPException(status_code=503, detail='CTS not available')
+    schemata = app_state.schematism.list_schemata()
+    return {
+        'schemata': [
+            {
+                'node_name': s.node_name,
+                'expected_betti_0': s.expected_betti_0,
+                'expected_betti_1': s.expected_betti_1,
+                'min_persistence': s.min_persistence,
+                'has_topological_commitment': s.has_topological_commitment,
+                'epsilon': s.epsilon,
+            }
+            for s in schemata
+        ],
+        'count': len(schemata),
+    }
+
+
+_fI1l49f.include_router(cts_router)
+
 @_fI1l49f.get('/health')
 async def _fI0O4BO():
     return {
         'status': 'healthy',
         'framework': FRAMEWORK_AVAILABLE,
-        'pointcloud_api': POINTCLOUD_API_AVAILABLE
+        'pointcloud_api': POINTCLOUD_API_AVAILABLE,
+        'cts': CTS_AVAILABLE,
     }
 # Public API alias
 app = _fI1l49f
