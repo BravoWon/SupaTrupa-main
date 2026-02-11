@@ -33,6 +33,23 @@ from jones_framework.core.knowledge_flow import (
     KnowledgeFlow,
     integrate_knowledge_flow,
 )
+from jones_framework.core.universal_tensor import (
+    TensorComponent,
+    TensorDecomposition,
+    UniversalTensorSpace,
+)
+from jones_framework.core.schematism import (
+    PatternSchema,
+    SchematismResult,
+    SchematismBridge,
+)
+from jones_framework.core.coherent_configuration import (
+    CriticalityType,
+    CoherentConfiguration,
+    AgencyStep,
+    ConfigurationBuilder,
+    AgencyFlow,
+)
 
 __all__ = [
     # Core state
@@ -51,4 +68,14 @@ __all__ = [
     # Knowledge flow
     'Role', 'ViewDimension', 'KnowledgePacket', 'ViewPreference',
     'ViewPreferenceModel', 'KnowledgeFlow', 'integrate_knowledge_flow',
+
+    # CTS: Universal Tensor Space (Section 3)
+    'TensorComponent', 'TensorDecomposition', 'UniversalTensorSpace',
+
+    # CTS: Schematism Bridge (Section 7)
+    'PatternSchema', 'SchematismResult', 'SchematismBridge',
+
+    # CTS: Coherent Configuration (Sections 8-9)
+    'CriticalityType', 'CoherentConfiguration', 'AgencyStep',
+    'ConfigurationBuilder', 'AgencyFlow',
 ]

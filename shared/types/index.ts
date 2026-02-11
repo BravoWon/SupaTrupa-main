@@ -504,6 +504,96 @@ export interface ComponentNode {
 }
 
 // =============================================================================
+// CTS Types — Configurational Term Series (Sections 3-9)
+// =============================================================================
+
+/** CTS Section 3: Universal Tensor Space component enum */
+export type TensorComponent = 'PATTERN' | 'TEMPORAL' | 'MAGNITUDE' | 'FREQUENCY';
+
+/** CTS Def 3.3: Decomposition into U = P × T × M × F */
+export interface TensorDecomposition {
+  pattern: number[];
+  temporal: number[];
+  magnitude: number[];
+  frequency: number[];
+  dimensions: Record<TensorComponent, number>;
+}
+
+/** CTS Eq 14: Schematism check result */
+export interface SchematismResult {
+  node_name: string;
+  is_grounded: boolean;
+  bottleneck_distance: number;
+  epsilon: number;
+  feature_distance: number;
+  message: string;
+  is_transcendental_error: boolean;
+}
+
+/** CTS Def 8.3: Criticality type */
+export type CriticalityType = 'NONE' | 'TYPE_I' | 'TYPE_II';
+
+/** CTS Def 8.1: Coherent Configuration Ct = (Q, Φ) */
+export interface CoherentConfiguration {
+  phi: number;
+  timestamp: number;
+  is_valid: boolean;
+  betti_numbers: Record<number, number>;
+  total_persistence: Record<number, number>;
+  criticality: CriticalityType;
+  has_nontrivial_topology: boolean;
+  has_high_integration: boolean;
+  satisfies_consciousness_criteria: boolean;
+  schematism_results: Record<string, {
+    is_grounded: boolean;
+    bottleneck_distance: number;
+    message: string;
+  }>;
+  metadata: Record<string, unknown>;
+}
+
+/** CTS Section 9: Agency step in the term series */
+export interface AgencyStep {
+  step_index: number;
+  is_valid: boolean;
+  pre_condition_met: boolean;
+  post_condition_met: boolean;
+  continuity_preserved: boolean;
+  cost: number;
+  message: string;
+  config_before: CoherentConfiguration | null;
+  config_after: CoherentConfiguration | null;
+}
+
+/** CTS Eq 12: Coherence Phi response */
+export interface CoherencePhi {
+  phi: number;
+  fiedler_value: number;
+  antinomy_load: number;
+  num_components: number;
+  antinomies: [string, string][];
+}
+
+/** CTS Criticality detection response */
+export interface CriticalityDetection {
+  criticality: CriticalityType;
+  transition_valid: boolean;
+  transition_message: string;
+  config_prev: CoherentConfiguration;
+  config_curr: CoherentConfiguration;
+}
+
+/** Pattern schema entry */
+export interface PatternSchemaEntry {
+  node_name: string;
+  expected_betti_0: number | null;
+  expected_betti_1: number | null;
+  min_persistence: number;
+  has_topological_commitment: boolean;
+  epsilon: number | null;
+}
+
+// =============================================================================
 // Re-exports for convenience
 // =============================================================================
 
